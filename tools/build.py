@@ -81,6 +81,48 @@ def link_markup(links: list[dict]) -> str:
     return ''.join(output)
 
 
+def filter_markup(settings: dict | None) -> tuple[str, str]:
+    """Use existing labels for native routes and for the Korean default view."""
+    if not settings:
+        return '', 'true'
+    kind = settings['kind']
+    if kind not in ('language', 'region'):
+        raise ValueError('Unknown content filter')
+    options = settings['options']
+    labels = [label for option in options for label in option['labels']]
+    if len(labels) != len(set(labels)):
+        raise ValueError('A label cannot select multiple languages or regions')
+
+    def matches(variable: str, values: list[str]) -> str:
+        # These are checked-in labels, not post content or user input.
+        if any('"' in value or '\\' in value for value in values):
+            raise ValueError('Unsupported quote in configured label')
+        return '(' + ' or '.join(variable + ' == "' + value + '"' for value in values) + ')' if values else 'false'
+
+    known_label = matches('data:blog.searchLabel', labels)
+    links = []
+    for option in options:
+        href = option['href']
+        if not href.startswith('/') or href.startswith('//'):
+            raise ValueError('Content filters must use same-site paths')
+        selected = matches('data:blog.searchLabel', option['labels']) if option['labels'] else 'not ' + known_label
+        attrs = {
+            'class': 'filter-option', 'href': href,
+            'data-filter-key': option['key'],
+            'data-filter-labels': json.dumps(option['labels'], ensure_ascii=False, separators=(',', ':')),
+            'expr:aria-current': selected + ' ? "page" : "false"',
+        }
+        if option.get('feed_label'):
+            attrs['data-filter-feed-label'] = option['feed_label']
+        links.append('<a' + ''.join(' ' + key + '="' + html.escape(value, quote=True) + '"' for key, value in attrs.items()) + '>' + html.escape(option['label']) + '</a>')
+    title = html.escape(settings['label'])
+    markup = '<nav class="edition-filters" aria-label="' + title + ' 선택" data-filter-kind="' + kind + '"><div class="site-container filter-inner"><span class="filter-label">' + title + '</span><div class="filter-options">' + ''.join(links) + '</div></div></nav>'
+    # Blogger renders Korean stories before JS. Explicit foreign label views
+    # retain their native results; JS follows native cursors to fill 24 stories.
+    guard = known_label + ' or not (data:post.labels any (label => ' + matches('label.name', labels) + '))' if kind == 'language' else 'true'
+    return markup, html.escape(guard, quote=True)
+
+
 def tracking_markup(settings: dict) -> tuple[str, str]:
     head, body = [], ''
     gtm, clarity = settings.get('google_tag_manager'), settings.get('microsoft_clarity')
@@ -126,6 +168,7 @@ def build(output: Path, asset_base: str | None = None, site: str = 'item') -> di
     if ']]>' in css or ']]>' in js or '</script' in js.lower():
         raise ValueError('Unsafe inline asset boundary')
     menu, urls = navigation(profile['navigation'])
+    filter_bar, story_filter = filter_markup(profile.get('filters'))
     tracking_head, tracking_body = tracking_markup(profile['tracking'])
     verified = verify_assets(asset_base) if asset_base else []
     if asset_base:
@@ -139,6 +182,8 @@ def build(output: Path, asset_base: str | None = None, site: str = 'item') -> di
         '@@STYLES@@': styles,
         '@@SCRIPTS@@': scripts,
         '@@MENU@@': menu,
+        '@@FILTER_BAR@@': filter_bar,
+        '@@STORY_FILTER_CONDITION@@': story_filter,
         '@@VERIFICATION@@': '\n'.join('<meta name="' + html.escape(meta['name'], quote=True) + '" content="' + html.escape(meta['content'], quote=True) + '"/>' for meta in profile['verification']),
         '@@AD_WIDGET@@': ad_widget(profile['ads']),
         '@@LISTING_AD_SETTINGS@@': listing_ad_settings(profile['ads']),
@@ -180,7 +225,7 @@ def build(output: Path, asset_base: str | None = None, site: str = 'item') -> di
     payload = source.encode('utf-8')
     (output / filename).write_bytes(payload)
     manifest = {
-        'theme': 'KR Inside Journal', 'version': '1.3.0',
+        'theme': 'KR Inside Journal', 'version': '1.4.0',
         'site': site, 'host': profile['host'], 'source': profile['source'],
         'mode': 'verified-external' if asset_base else 'portable',
         'xml': {'filename': filename, 'bytes': len(payload), 'sha256': digest(payload)},
@@ -190,6 +235,7 @@ def build(output: Path, asset_base: str | None = None, site: str = 'item') -> di
         'original_menu_destinations_retained': len(set(profile['navigation']['required_urls'])),
         'menu_groups': len(profile['navigation']['groups']),
         'topic_links': len(profile['topics']),
+        'content_filters': profile.get('filters'),
         'widgets': [{'id': w.get('id'), 'type': w.get('type')} for w in widgets],
         'blogger_import_performed': False,
     }

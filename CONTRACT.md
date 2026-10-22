@@ -33,3 +33,9 @@ The post grid carries data-ad-client/data-ad-slot from the existing ad-content.h
 ## Domain profiles
 
 One CSS/JS pair is shared unchanged by every edition. Site-specific settings live only in sites/*.json and generated XML: menus, intro, topics, verification and source tracking IDs. Never apply the item menu or Naver verification ID to another domain. Public asset URLs must be verified before producing external XML.
+
+## Language and region selectors
+
+The optional header `nav.edition-filters[data-filter-kind=language|region]` contains `.filter-inner`, `.filter-label`, `.filter-options` and `.filter-option` anchors. Anchor data attributes contain the key, JSON array of exact existing parent/subcategory labels, and optional parent feed label. Native links select existing Blogger label pages; no redirects, stored language preference or invented Korean label. www/trip default to Korean (absence of known foreign labels); news defaults to all regions. Current state uses the native route or article labels. Mobile selection scrolls only the horizontal button strip.
+
+Every story includes hidden `.post-label-data [data-post-label]` elements for all native labels. Blogger's `any` label expression excludes foreign stories on Korean listings before JS. Foreign label pages keep their native results. Runtime counts only matching stories, advances even through a valid empty filtered grid, and uses real next-page cursors; at most 48 native requests per language fill. Recent posts use the selected parent-language/region feed, or up to six paginated default-feed requests to find four Korean posts. Feed failures preserve matching results and a link to the selected view. PopularPosts keeps the native overall ranking. Item without the optional selector retains its original behavior.

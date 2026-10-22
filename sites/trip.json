@@ -291,5 +291,64 @@
   "ads": {
     "client": "ca-pub-8621160875847917",
     "slot": "7800800754"
+  },
+  "filters": {
+    "kind": "language",
+    "label": "언어",
+    "options": [
+      {
+        "key": "ko",
+        "label": "한국어",
+        "href": "/",
+        "labels": []
+      },
+      {
+        "key": "en",
+        "label": "English",
+        "href": "/search/label/English?max-results=24",
+        "labels": [
+          "English",
+          "Domestic Travel",
+          "Financial Freedom",
+          "International Travel"
+        ],
+        "feed_label": "English"
+      },
+      {
+        "key": "ja",
+        "label": "日本語",
+        "href": "/search/label/%E6%97%A5%E6%9C%AC%E8%AA%9E?max-results=24",
+        "labels": [
+          "日本語",
+          "国内旅行",
+          "経済的自由",
+          "海外旅行"
+        ],
+        "feed_label": "日本語"
+      },
+      {
+        "key": "vi",
+        "label": "Tiếng Việt",
+        "href": "/search/label/Ti%E1%BA%BFng%20Vi%E1%BB%87t?max-results=24",
+        "labels": [
+          "Tiếng Việt",
+          "Du lịch nội địa",
+          "Tự do tài chính",
+          "Du lịch quốc tế"
+        ],
+        "feed_label": "Tiếng Việt"
+      },
+      {
+        "key": "zh",
+        "label": "中文",
+        "href": "/search/label/%E4%B8%AD%E6%96%87?max-results=24",
+        "labels": [
+          "中文",
+          "國內旅行",
+          "國際旅行"
+        ],
+        "feed_label": "中文"
+      }
+    ]
   }
 }
