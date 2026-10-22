@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateVersion='1.0.0' data-theme='auto' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
+  <meta content='light dark' name='color-scheme'/>
+  <b:include data='blog' name='all-head-content'/>
+  <title><data:view.title.escaped/></title>
+  @@VERIFICATION@@
+  @@STYLES@@
+  <b:template-skin><![CDATA[
+body#layout .content-layout{display:flex;gap:20px}body#layout #main-content{width:65%}body#layout .discovery-rail{width:35%}body#layout .site-header,body#layout .intro,body#layout .mobile-shortcuts,body#layout .site-footer,body#layout .search-section{display:none}body#layout .section{margin:12px 0;padding:8px}
+  ]]></b:template-skin>
+</head>
+<body expr:data-view='data:view.isHomepage ? &quot;home&quot; : data:view.isPost ? &quot;post&quot; : data:view.isPage ? &quot;page&quot; : data:view.isError ? &quot;error&quot; : &quot;index&quot;'>
+  <a class='skip-link' href='#main-content'>본문으로 건너뛰기</a>
+  <header class='site-header'>
+    <div class='site-container header-inner'>
+      <a aria-label='현재 블로그 홈' class='brand' expr:href='data:blog.homepageUrl'><span class='brand-mark'>kr<span>.</span></span><span class='brand-name'>KR INSIDE<span class='brand-caption'>A closer look at everyday life</span></span></a>
+      <nav aria-label='KR Inside 블로그' class='edition-nav'>
+        <a data-edition='www' href='https://www.kr-inside.com/'>경제·생활</a>
+        <a data-edition='news' href='https://news.kr-inside.com/'>부동산 뉴스</a>
+        <a data-edition='trip' href='https://trip.kr-inside.com/'>여행</a>
+        <a data-edition='item' href='https://item.kr-inside.com/'>좋은 상품</a>
+      </nav>
+      <div class='header-actions'>
+        <button aria-label='화면 테마: 자동. 밝은 테마로 변경' class='theme-toggle' data-theme-toggle='' hidden='hidden' type='button'><span aria-hidden='true'>◐</span><span class='theme-label sr-only'>화면 테마: 자동</span></button>
+        <a aria-label='블로그 검색' class='search-shortcut' href='#site-search'><svg aria-hidden='true' fill='none' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><circle cx='10.5' cy='10.5' r='6.5' stroke='currentColor' stroke-width='1.7'/><path d='m16 16 4.5 4.5' stroke='currentColor' stroke-linecap='round' stroke-width='1.7'/></svg></a>
+        <details class='site-menu' id='site-menu'>
+          <summary aria-label='전체 메뉴' class='menu-toggle'><span aria-hidden='true' class='menu-icon'>☰</span><span>전체 메뉴</span></summary>
+          <div class='menu-panel'>
+            <div class='menu-panel-heading'><span class='eyebrow'>EXPLORE KR INSIDE</span><button aria-label='전체 메뉴 닫기' class='menu-close' hidden='hidden' type='button'>닫기 ×</button></div>
+            <nav aria-label='전체 카테고리' class='menu-groups'>@@MENU@@</nav>
+          </div>
+        </details>
+      </div>
+    </div>
+  </header>
+  <div class='site-container'>
+    <b:if cond='data:view.isHomepage'>
+      <section class='intro'>
+        <p class='eyebrow'>THE KR INSIDE JOURNAL</p>
+        <h1 data-edition-title=''>일상에 깊이를 더하는 이야기.</h1>
+        <p data-edition-description=''>경제와 부동산, 새로운 여행지와 좋은 상품까지. 알아두면 쓸모 있는 이야기를 만나보세요.</p>
+        <div class='intro-links'><a href='#latest-posts'>새로 올라온 이야기 <span aria-hidden='true'>↗</span></a><a href='#popular-posts'>많이 읽은 이야기 <span aria-hidden='true'>↗</span></a></div>
+      </section>
+    </b:if>
+    <div class='content-layout'>
+      <b:class cond='data:view.isSingleItem' name='reading-layout'/>
+      <main id='main-content' tabindex='-1'>
+        <b:section class='main-section' id='main' maxwidgets='1' name='게시물' showaddelement='no'>
+          <b:widget id='Blog1' locked='true' title='블로그 게시물' type='Blog' version='2' visible='true'>
+            <b:widget-settings>
+              <b:widget-setting name='showDateHeader'>false</b:widget-setting>
+              <b:widget-setting name='showAuthor'>true</b:widget-setting>
+              <b:widget-setting name='showTimestamp'>true</b:widget-setting>
+              <b:widget-setting name='showLabels'>true</b:widget-setting>
+              <b:widget-setting name='showCommentLink'>true</b:widget-setting>
+              <b:widget-setting name='showShareButtons'>false</b:widget-setting>
+              <b:widget-setting name='showInlineAds'>false</b:widget-setting>
+            </b:widget-settings>
+            <b:includable id='main' var='this'>
+              <b:if cond='data:view.isMultipleItems'>
+                <div class='section-heading' id='latest-posts'>
+                  <div><p class='eyebrow'>LATEST STORIES</p><h2><b:if cond='data:view.isSearch'><data:view.title/><b:else/>새로 올라온 이야기</b:if></h2></div>
+                  <span class='section-note'>가장 최근의 기록부터</span>
+                </div>
+                <b:if cond='data:posts.empty'>
+                  <div class='empty-state'><h2>아직 이야기가 없습니다.</h2><p>다른 검색어를 입력하거나 다른 카테고리를 둘러보세요.</p><a expr:href='data:blog.homepageUrl'>블로그 홈으로</a></div>
+                <b:else/>
+                  <div class='post-grid'>
+                    <b:loop index='i' values='data:posts' var='post'><b:include data='post' name='krStory'/></b:loop>
+                  </div>
+                </b:if>
+              <b:else/>
+                <b:loop values='data:posts' var='post'><b:include data='post' name='krArticle'/></b:loop>
+                <b:if cond='data:view.isError'><div class='empty-state'><h1>페이지를 찾을 수 없습니다.</h1><p>주소를 확인하거나 다른 이야기를 찾아보세요.</p><a expr:href='data:blog.homepageUrl'>홈으로 돌아가기</a></div></b:if>
+              </b:if>
+              <b:include name='krPagination'/>
+            </b:includable>
+            <b:includable id='krStory' var='post'>
+              <article class='story-card'>
+                <b:class cond='data:i == 0' name='story-card--lead'/>
+                <a class='story-image' expr:aria-label='data:post.title' expr:href='data:post.url.canonical' tabindex='-1'>
+                  <b:if cond='data:post.featuredImage'>
+                    <img alt='' decoding='async' expr:loading='data:i == 0 ? &quot;eager&quot; : &quot;lazy&quot;' expr:src='resizeImage(data:post.featuredImage, 960, &quot;3:2&quot;)' height='640' width='960'/>
+                  <b:else/><span aria-hidden='true' class='image-placeholder'>KR.</span></b:if>
+                </a>
+                <div class='story-content'>
+                  <b:if cond='data:post.labels'><a class='story-category' expr:href='data:post.labels.first.url'><data:post.labels.first.name/></a><b:else/><span class='story-category'>INSIDE STORY</span></b:if>
+                  <h2 class='story-title'><a expr:href='data:post.url.canonical'><b:if cond='data:post.title'><data:post.title/><b:else/>제목 없는 글</b:if></a></h2>
+                  <p class='story-excerpt'><data:post.snippets.short/></p>
+                  <div class='story-meta'><time expr:datetime='data:post.date.iso8601'><data:post.date/></time><span aria-hidden='true' class='story-arrow'>↗</span></div>
+                </div>
+              </article>
+            </b:includable>
+            <b:includable id='krArticle' var='post'>
+              <article class='article'>
+                <header class='article-header'>
+                  <b:if cond='data:post.labels'><a class='article-category' expr:href='data:post.labels.first.url'><data:post.labels.first.name/></a></b:if>
+                  <h1 class='article-title'><b:if cond='data:post.title'><data:post.title/><b:else/>제목 없는 글</b:if></h1>
+                  <b:if cond='data:view.isPost'><div class='article-meta'><span><data:post.author.name/></span><span aria-hidden='true'>·</span><time expr:datetime='data:post.date.iso8601'><data:post.date/></time></div></b:if>
+                </header>
+                <div class='post-body entry-content' expr:id='&quot;post-body-&quot; + data:post.id'><data:post.body/></div>
+                <footer class='article-footer'>
+                  <div class='post-labels'><b:loop values='data:post.labels' var='label'><a expr:href='data:label.url' rel='tag'><data:label.name/></a></b:loop></div>
+                  <div class='article-actions'><button data-copy-link='' hidden='hidden' type='button'>글 링크 복사</button><b:if cond='data:post.allowComments'><a href='#comments'>댓글 보기</a></b:if><span aria-live='polite' data-copy-status='' role='status'/></div>
+                </footer>
+              </article>
+              <b:if cond='data:post.allowComments'><b:include data='post' name='comments'/></b:if>
+              <b:if cond='data:view.isPost'>
+                <script type='application/ld+json'>{"@context":"https://schema.org","@type":"BlogPosting","headline":"<data:post.title.jsonEscaped/>","url":"<data:post.url.canonical.jsonEscaped/>","datePublished":"<data:post.date.iso8601.jsonEscaped/>","dateModified":"<data:post.lastUpdated.iso8601.jsonEscaped/>","author":{"@type":"Person","name":"<data:post.author.name.jsonEscaped/>"},"publisher":{"@type":"Organization","name":"<data:blog.title.jsonEscaped/>"}<b:if cond='data:post.featuredImage'>,"image":"<data:post.featuredImage.jsonEscaped/>"</b:if>}</script>
+              </b:if>
+            </b:includable>
+            <b:includable id='krPagination'>
+              <nav aria-label='게시물 페이지 이동' class='pagination'>
+                <b:if cond='data:newerPageUrl'><a class='rel-newer' expr:href='data:newerPageUrl' rel='prev'>← 이전 페이지</a></b:if>
+                <a class='pagination-home' expr:href='data:blog.homepageUrl'>홈으로</a>
+                <b:if cond='data:olderPageUrl'><a class='rel-older' expr:href='data:olderPageUrl' rel='next'>다음 페이지 →</a></b:if>
+              </nav>
+            </b:includable>
+          </b:widget>
+        </b:section>
+      </main>
+      <aside aria-label='인기글과 더 읽을거리' class='discovery-rail'>
+        <section class='rail-section' id='popular-posts'>
+          <div class='section-heading'><div><p class='eyebrow'>MOST READ</p><h2>많이 읽은 이야기</h2></div><span class='section-note'>최근 한 달</span></div>
+          <b:section class='popular-section' id='popular' maxwidgets='1' name='인기 게시물' showaddelement='no'>
+            <b:widget id='PopularPosts1' locked='false' title='인기 게시물' type='PopularPosts' version='2' visible='true'>
+              <b:widget-settings><b:widget-setting name='numItemsToShow'>5</b:widget-setting><b:widget-setting name='showThumbnails'>true</b:widget-setting><b:widget-setting name='showSnippets'>false</b:widget-setting><b:widget-setting name='timeRange'>LAST_MONTH</b:widget-setting></b:widget-settings>
+              <b:includable id='main' var='this'>
+                <b:if cond='data:posts.empty'><p class='feed-fallback'>인기글을 집계하고 있습니다. <a href='/search'>전체 글 보기 →</a></p><b:else/>
+                  <ol class='ranked-list'><b:loop index='i' values='data:posts' var='post'>
+                    <li class='ranked-item'><span aria-hidden='true' class='rank-number'><b:eval expr='data:i + 1'/></span>
+                      <a class='ranked-image' expr:aria-label='data:post.title' expr:href='data:post.url.canonical' tabindex='-1'><b:if cond='data:post.featuredImage'><img alt='' decoding='async' expr:src='resizeImage(data:post.featuredImage, 160, &quot;1:1&quot;)' height='160' loading='lazy' width='160'/><b:else/><span aria-hidden='true' class='image-placeholder'>KR.</span></b:if></a>
+                      <div class='ranked-content'><a class='ranked-title' expr:href='data:post.url.canonical'><data:post.title/></a><b:if cond='data:post.labels'><span class='ranked-meta'><data:post.labels.first.name/></span></b:if></div>
+                    </li>
+                  </b:loop></ol>
+                </b:if>
+              </b:includable>
+            </b:widget>
+          </b:section>
+        </section>
+        <section class='rail-section' id='recent-posts'>
+          <div class='section-heading'><div><p class='eyebrow'>JUST PUBLISHED</p><h2>최근 게시물</h2></div></div>
+          <div data-feed-url='/feeds/posts/default?alt=json&amp;max-results=4' data-limit='4' data-recent-posts=''><a class='feed-fallback' href='/search'>최근 게시물 전체 보기 →</a></div>
+          <noscript><p class='section-note'>위 링크에서 최근 게시물을 확인할 수 있습니다.</p></noscript>
+        </section>
+        <section class='rail-section topic-section'><p class='eyebrow'>EXPLORE MORE</p><h2>관심 있는 이야기로</h2><div class='topic-links'><a href='https://www.kr-inside.com/search/label/경제적자유'>경제적 자유 <span aria-hidden='true'>↗</span></a><a href='https://news.kr-inside.com/2025/04/main.html'>전국 부동산 뉴스 <span aria-hidden='true'>↗</span></a><a href='https://trip.kr-inside.com/'>새로운 여행지 <span aria-hidden='true'>↗</span></a><a href='https://item.kr-inside.com/'>오늘의 좋은 상품 <span aria-hidden='true'>↗</span></a></div></section>
+        <b:section class='extra-section' id='sidebar-extras' name='추가 사이드바 위젯' showaddelement='yes'/>
+        @@AD_WIDGET@@
+      </aside>
+    </div>
+    <section class='search-section' id='site-search'><div><p class='eyebrow'>FIND YOUR NEXT READ</p><h2>어떤 이야기가 궁금하세요?</h2></div><form action='/search' class='search-form' method='get' role='search'><label class='sr-only' for='search-query'>블로그 검색어</label><input id='search-query' name='q' placeholder='관심 있는 키워드를 검색하세요' required='required' type='search'/><button type='submit'>검색 <span aria-hidden='true'>↗</span></button></form></section>
+  </div>
+  <nav aria-label='빠른 이동' class='mobile-shortcuts'><a href='#main-content'>새 글</a><a href='#popular-posts'>인기글</a><a href='#site-search'>검색</a></nav>
+  <footer class='site-footer'><div class='site-container footer-inner'><div><a class='brand' expr:href='data:blog.homepageUrl'><span class='brand-mark'>kr<span>.</span></span><span class='brand-name'>KR INSIDE</span></a><p>일상에 깊이를 더하는 이야기.</p><small>© <span data-year=''>2026</span> <data:blog.title/>. Powered by Blogger.</small></div><nav aria-label='다른 블로그와 소식' class='footer-links'><a href='https://www.kr-inside.com/'>경제·생활</a><a href='https://news.kr-inside.com/'>부동산 뉴스</a><a href='https://trip.kr-inside.com/'>여행</a><a href='https://item.kr-inside.com/'>좋은 상품</a><a href='https://blog.naver.com/yak-bang' rel='noopener' target='_blank'>네이버 블로그 ↗</a><a href='?hl=ar'>العربية</a><a href='/feeds/posts/default'>RSS</a></nav></div></footer>
+  <b:if cond='data:blog.analyticsAccountNumber'><b:include data='blog' name='google-analytics'/></b:if>
+  @@SCRIPTS@@
+</body>
+</html>
