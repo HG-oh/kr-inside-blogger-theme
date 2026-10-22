@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateVersion='1.4.0' data-edition='@@SITE_ID@@' data-theme='auto' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateVersion='1.4.1' data-edition='@@SITE_ID@@' data-theme='auto' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
   <meta content='width=device-width, initial-scale=1' name='viewport'/>
   <meta content='light dark' name='color-scheme'/>
@@ -72,7 +72,7 @@ body#layout .content-layout{display:flex;gap:20px}body#layout #main-content{widt
                   <div class='empty-state'><h2>아직 이야기가 없습니다.</h2><p>다른 검색어를 입력하거나 다른 카테고리를 둘러보세요.</p><a expr:href='data:blog.homepageUrl'>블로그 홈으로</a></div>
                 <b:else/>
                   <div class='post-grid' data-page-size='24' @@LISTING_AD_SETTINGS@@>
-                    <b:loop index='i' values='data:posts' var='post'><b:include cond='@@STORY_FILTER_CONDITION@@' data='post' name='krStory'/></b:loop>
+                    <b:loop index='i' values='data:posts' var='post'>@@STORY_INCLUDE@@</b:loop>
                   </div>
                 </b:if>
               <b:else/>

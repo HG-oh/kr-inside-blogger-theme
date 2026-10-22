@@ -114,11 +114,16 @@ def expression(text, context):
         return expression(args if comma < 0 else args[:comma], context)
     if text.startswith("(") and text.endswith(")"):
         return expression(text[1:-1], context)
-    collection = re.fullmatch(r"((?:data:)?[A-Za-z_][\w.]*) any \(([A-Za-z_]\w*)\s*=>\s*(.+)\)", text)
+    collection = re.fullmatch(r"((?:data:)?[A-Za-z_][\w.]*) any ([A-Za-z_]\w*)\s*=>\s*(.+)", text)
     if collection:
         path, variable, predicate = collection.groups()
         return any(bool(value(expression(predicate, dict(context, **{variable: item}))))
                    for item in (resolve(path, context) or []))
+    index = find_operator(text, " in ")
+    if index >= 0:
+        return value(expression(text[:index], context)) in expression(text[index + 4:], context)
+    if text.startswith("[") and text.endswith("]"):
+        return json.loads(text)
     if len(text) >= 2 and text[0] == text[-1] and text[0] in "\"'":
         return text[1:-1]
     if text in {"true", "false"}:

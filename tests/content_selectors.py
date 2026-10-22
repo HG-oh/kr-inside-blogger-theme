@@ -72,7 +72,7 @@ def render(tree, posts, *, label='', cursor=None, article=False):
     context['posts'] = posts
     context['olderPageUrl'] = cursor or ''
     context['newerPageUrl'] = ''
-    context['blog']['searchLabel'] = label
+    context['view']['search'] = {'label': label}
     return '<!doctype html>\n' + preview.Renderer().node(tree, context)
 
 
@@ -169,6 +169,20 @@ def static_case(trees, site):
             assert html_card_ids(render(tree, [post(1, [label]), post(2, ['국내여행'])])) == [2], label
             assert html_card_ids(render(tree, [post(1, [label])], label=label)) == [1], label
     return {'case': site + '-native-korean-exclusion-and-existing-tag-inventory', 'passed': True}
+
+
+def import_expression_regression(trees):
+    # Blogger rejected the former header expression during a real import.
+    # Our preview is not its compiler; ensure that exact expression family is
+    # absent, then rely on mixed-label fixtures for the replacement's behavior.
+    for site, tree in trees.items():
+        expressions = [value for node in tree.iter() for value in node.attrib.values()]
+        assert not any('data:blog.searchLabel' in value for value in expressions), site
+        options = tree.xpath('//*[contains(concat(" ", @class, " "), " filter-option ")]')
+        assert all(not any(key.startswith('{' + preview.E + '}') for key in option.attrib) for option in options), site
+        if site in ('www', 'trip'):
+            assert any(value.startswith('data:view.search.label in [') for value in expressions), site
+    return {'case': 'reported-blogger-header-expression-removed-from-all-domains', 'passed': True}
 
 
 def language_navigation_case(browser, trees, site, width):
@@ -408,7 +422,7 @@ def main():
             assert len(names) == 1, (site, names)
             xml_path = names[0]
         trees[site] = etree.fromstring(xml_path.read_bytes(), etree.XMLParser(resolve_entities=False, no_network=True))
-    results = [static_case(trees, site) for site in ('www', 'trip')]
+    results = [import_expression_regression(trees)] + [static_case(trees, site) for site in ('www', 'trip')]
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(executable_path='/usr/bin/chromium', headless=True,
                                              args=['--no-sandbox', '--disable-dev-shm-usage'])
