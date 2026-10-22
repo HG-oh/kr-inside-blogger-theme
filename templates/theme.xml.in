@@ -68,7 +68,7 @@ body#layout .content-layout{display:flex;gap:20px}body#layout #main-content{widt
                 <b:if cond='data:posts.empty'>
                   <div class='empty-state'><h2>아직 이야기가 없습니다.</h2><p>다른 검색어를 입력하거나 다른 카테고리를 둘러보세요.</p><a expr:href='data:blog.homepageUrl'>블로그 홈으로</a></div>
                 <b:else/>
-                  <div class='post-grid' data-page-size='24'>
+                  <div class='post-grid' data-page-size='24' @@LISTING_AD_SETTINGS@@>
                     <b:loop index='i' values='data:posts' var='post'><b:include data='post' name='krStory'/></b:loop>
                   </div>
                 </b:if>

@@ -10,7 +10,7 @@ html[data-theme=light|dark|auto], body[data-view=home|index|post|page|error]. `[
 
 `.site-container > .intro` contains `.eyebrow`, h1[data-edition-title], p[data-edition-description], `.intro-links` links to #latest-posts and #popular-posts. `.edition-nav a[data-edition=www|news|trip|item]` gets aria-current=page fromJS. No interactive controls should depend on hidden tooltips.
 
-`.site-container > .content-layout` contains `main#main-content` and `aside.discovery-rail`. Main `.section-heading#latest-posts` with .eyebrow, h2, .section-note; `.post-grid` contains article.story-card: a.story-image>img[width=960,height=640,loading=lazy] or span.image-placeholder, then div.story-content with a.story-category, h2.story-title>a, p.story-excerpt, div.story-meta > time + optional span. First story has `.story-card--lead`, eager image, may span both columns and be horizontal. Other cards two columns desktop, one mobile. Images must have solid aspect-ratio and object-fit. Empty state .empty-state.
+`.site-container > .content-layout` contains `main#main-content` and `aside.discovery-rail`. Main `.section-heading#latest-posts` with .eyebrow, h2, .section-note; `.post-grid` contains article.story-card: a.story-image>img[width=960,height=640,loading=lazy] or span.image-placeholder, then div.story-content with a.story-category, h2.story-title>a, p.story-excerpt, div.story-meta > time + optional span. First story has `.story-card--lead` and an eager image. All stories occupy one row each on desktop and mobile. The grid fills to 24 actual story cards using native pagination; only story cards count toward that limit. Images must have solid aspect-ratio and object-fit. Empty state .empty-state.
 
 `.pagination` contains anchors.rel-newer/rel-older and .pagination-home with real href. Single page uses `.article-header` (.article-category,h1.article-title,.article-meta), `.post-body.entry-content` (existing user HTML), `.article-footer` (.post-labels, button[data-copy-link], a[href=#comments]), `.comments` native Blogger markup. `.reading-layout` can specialize content-layout for posts. Body figures/photos/tables/code, legacy FAQ, product and TOC classes require robust contained styling. Reading body max70ch.
 
@@ -25,3 +25,7 @@ No dependencies. Accessible details-based menu: close button, outside-click, Esc
 ## Constraints
 
 Builder produces small installable portable XML with new CSS/JS inline if publication blocked and external XML only after real asset URLs are verified. External build must never be presented as ready while unpublished. Comments use native Blogger includables, no third-party theme runtime. Repository publication is root task. CSS agent edits only assets/theme.css; JS agent assets/theme.js; validation agent tests/validate.py and related test-only fixtures. Coordinate contract adjustments through messages.
+
+## In-list advertisements
+
+The post grid carries data-ad-client/data-ad-slot from the existing ad-content.html, not invented IDs. Add `.feed-ad[data-after-post]` between stories after 6, 12, 18 only when another story follows. Each has label 광고 and a reserved `.ad-frame`. Create its ins.adsbygoogle only near viewport; reuse SDK and request each unit once. Ads never count as posts or replace a post.

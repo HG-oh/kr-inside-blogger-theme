@@ -280,10 +280,83 @@
     }
   }
 
+  function setupListingAds(grid) {
+    const client = grid.dataset.adClient;
+    const slot = grid.dataset.adSlot;
+    if (!/^ca-pub-\d+$/.test(client || '') || !/^\d+$/.test(slot || '')) return () => {};
+    const placements = new Map();
+    let loaderFailed = false;
+    let watchedLoader;
+    function hideFailedAds() {
+      loaderFailed = true;
+      placements.forEach(unit => { unit.dataset.adState = 'error'; unit.hidden = true; });
+    }
+    function ensureLoader() {
+      const selector = 'script[src^="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]';
+      let script = document.querySelector(selector);
+      const needsLoader = !script;
+      if (needsLoader) {
+        script = document.createElement('script');
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + client;
+      }
+      if (watchedLoader !== script) {
+        script.addEventListener('error', hideFailedAds, {once: true});
+        watchedLoader = script;
+      }
+      if (needsLoader) document.head.append(script);
+    }
+    function requestAd(unit) {
+      if (loaderFailed || unit.dataset.adState !== 'waiting' || unit.getBoundingClientRect().width < 1) return;
+      unit.dataset.adState = 'queued';
+      const ad = element('ins', 'adsbygoogle');
+      ad.style.display = 'block';
+      ad.dataset.adClient = client;
+      ad.dataset.adSlot = slot;
+      ad.dataset.adFormat = 'auto';
+      // Keep responsive units inside the story column, including narrow screens.
+      ad.dataset.fullWidthResponsive = 'false';
+      unit.querySelector('.ad-frame').append(ad);
+      try {
+        ensureLoader();
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (_) { unit.dataset.adState = 'error'; unit.hidden = true; }
+    }
+    const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.target.getBoundingClientRect().width > 0) {
+          observer.unobserve(entry.target);
+          requestAd(entry.target);
+        }
+      });
+    }, {rootMargin: '200px 0px'}) : null;
+    return function syncAds() {
+      if (loaderFailed) return;
+      const cards = [...grid.querySelectorAll(':scope > .story-card')];
+      [6, 12, 18].forEach(after => {
+        // Keep ads between stories, and do not add another copy on retry.
+        if (cards.length <= after || placements.has(after)) return;
+        const unit = element('aside', 'feed-ad');
+        unit.setAttribute('aria-label', '광고');
+        unit.dataset.afterPost = String(after);
+        unit.dataset.adState = 'waiting';
+        unit.append(element('p', 'ad-label', '광고'), element('div', 'ad-frame'));
+        placements.set(after, unit);
+        cards[after - 1].after(unit);
+        if (observer) observer.observe(unit);
+        else requestAd(unit);
+      });
+    };
+  }
+
   function setupListing() {
     const grid = document.querySelector('.post-grid[data-page-size]');
     const navigation = document.querySelector('#main-content .pagination');
     if (!grid || !navigation) return;
+    const storyCount = () => grid.querySelectorAll(':scope > .story-card').length;
+    const syncAds = setupListingAds(grid);
+    syncAds();
     const limit = Math.min(30, Math.max(20, Number(grid.dataset.pageSize) || 24));
     let next = navigation.querySelector('.rel-older');
     const localURL = (value, base = location.href) => {
@@ -321,12 +394,12 @@
       grid.dataset.listState = 'loading';
       retry.hidden = true;
       if (next) next.hidden = true;
-      message.textContent = cursor && grid.children.length < limit ? '이야기를 더 불러오는 중…' : '';
+      message.textContent = cursor && storyCount() < limit ? '이야기를 더 불러오는 중…' : '';
       try {
-        for (let attempt = 0; cursor && grid.children.length < limit; attempt++) {
+        for (let attempt = 0; cursor && storyCount() < limit; attempt++) {
           if (attempt >= limit) throw new Error('Too many listing pages');
           const source = new URL(cursor.href);
-          const remaining = limit - grid.children.length;
+          const remaining = limit - storyCount();
           source.searchParams.set('max-results', String(remaining));
           if (visited.has(source.href)) throw new Error('Repeated listing page');
           const controller = new AbortController();
@@ -371,6 +444,7 @@
             fragment.append(card);
           });
           grid.append(fragment);
+          syncAds();
           batchKeys.forEach(id => seen.add(id));
           visited.add(source.href);
           cursor = following;

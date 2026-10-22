@@ -51,6 +51,16 @@ def ad_widget() -> str:
 </b:widget></b:section></section>'''
 
 
+def listing_ad_settings() -> str:
+    # Reuse the owner's existing responsive ad unit; never invent publisher IDs.
+    content = (ROOT / 'templates/ad-content.html').read_text()
+    client = re.search(r'data-ad-client=[\"\'](ca-pub-\d+)[\"\']', content)
+    slot = re.search(r'data-ad-slot=[\"\'](\d+)[\"\']', content)
+    if not client or not slot:
+        raise ValueError('Existing AdSense client and slot are required for listing ads')
+    return f'data-ad-client="{client[1]}" data-ad-slot="{slot[1]}"'
+
+
 def verify_assets(base: str) -> list[dict]:
     parsed = urlsplit(base)
     if parsed.scheme != 'https' or not parsed.netloc or parsed.query or parsed.fragment or parsed.username:
@@ -91,6 +101,7 @@ def build(output: Path, asset_base: str | None = None) -> dict:
         '@@MENU@@': menu,
         '@@VERIFICATION@@': '<meta content="50883d0c7a986cef2c594d5b344a1a9a3dca774b" name="naver-site-verification"/>',
         '@@AD_WIDGET@@': ad_widget(),
+        '@@LISTING_AD_SETTINGS@@': listing_ad_settings(),
     }
     for token, value in replacements.items():
         if source.count(token) != 1:
@@ -119,7 +130,7 @@ def build(output: Path, asset_base: str | None = None) -> dict:
     payload = source.encode('utf-8')
     (output / filename).write_bytes(payload)
     manifest = {
-        'theme': 'KR Inside Journal', 'version': '1.1.0',
+        'theme': 'KR Inside Journal', 'version': '1.2.0',
         'mode': 'verified-external' if asset_base else 'portable',
         'xml': {'filename': filename, 'bytes': len(payload), 'sha256': digest(payload)},
         'assets': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p.read_bytes())}

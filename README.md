@@ -9,6 +9,7 @@
 - 네 도메인별 소개·현재 메뉴 표시, 검색·페이지 이동, 자동/밝게/어둡게 모드
 - 기존 글의 FAQ·상품 카드·목차·표 스타일 지원
 - 원본 광고 위젯과 사이트 인증값 유지; 댓글·분석은 Blogger 기본 기능 사용
+- 글 목록의 6·12·18번째 글 뒤에 기존 반응형 애드센스 단위 배치; 스크롤 접근 시 각 위치에서 한 번만 요청
 
 적용 도메인: `www.kr-inside.com`, `news.kr-inside.com`, `trip.kr-inside.com`, `item.kr-inside.com`.
 
@@ -25,6 +26,7 @@
 | `tools/preview.py` | 실제 XML 구조와 예시 데이터로 검증용 HTML 생성 |
 | `tests/validate.py` | 구조·메뉴·반응형·기능 검증 |
 | `tests/listing.py` | 24개 목록·다음 페이지·최근글 본문 이미지 회귀 검사 |
+| `tests/ads.py` | 메뉴 문자·광고 배치·지연 요청·오류 처리 검증 |
 
 `Home`의 이전 `{homeIcon}` 값은 Blogger의 현재 홈 주소로 대체했습니다. 네이버·일본어 경제적자유 중복 링크는 한 번씩 유지하며, 주소가 비어 있던 About/Contact와 숨겨진 이전 Blogspot 홈은 새 메뉴에 넣지 않았습니다.
 
@@ -61,6 +63,7 @@ python3 tools/build.py --out dist
 python3 tools/preview.py --xml dist/kr-inside-new.xml --out dist/previews --inline-assets
 python3 tests/validate.py --xml dist/kr-inside-new.xml --previews dist/previews --report dist/validation-results.json
 python3 tests/listing.py --preview dist/previews/home.html --report dist/listing-results.json
+python3 tests/ads.py --preview dist/previews/home.html --report dist/ads-results.json
 ```
 
 검증 화면의 글과 그림은 예시입니다. 실제 XML에 들어 있는 CSS·JS와 메뉴·위젯 마크업을 검사하지만, 미리보기 렌더러는 Blogger 서버의 템플릿 컴파일러가 아닙니다. 댓글·광고·분석의 실제 서버 동작 및 Blogger 업로드 성공은 이 검사만으로 보증하지 않습니다. 운영 사이트 업로드와 댓글·광고 동작은 실제 Blogger에서 확인해야 합니다.
@@ -72,3 +75,9 @@ python3 tests/listing.py --preview dist/previews/home.html --report dist/listing
 Blogger가 홈페이지 글을 5개만 반환하는 경우에도 실제 다음 페이지를 같은 사이트에서 차례로 읽어 24개를 채웁니다. 마지막으로 읽은 페이지의 원래 다음 주소를 유지하므로 목록을 채운 뒤 다음 글로 이동합니다. 마지막 페이지는 남은 글만 표시합니다. 통신 오류가 발생하면 표시된 글을 유지하고 다시 불러오기 버튼과 다음 페이지 링크를 제공합니다. JavaScript를 끈 경우에는 Blogger가 출력한 기본 글 수와 페이지 이동을 사용합니다.
 
 최근글 썸네일은 미디어 필드, 본문, 요약 순으로 찾습니다. 본문은 비활성 템플릿에서 읽고 이미지 주소만 가져옵니다. 본문 스크립트·외부 위젯은 실행하지 않습니다.
+
+## 메뉴 기호와 목록 광고
+
+메뉴의 펼침·접힘 기호는 CSS Unicode escape를 사용해 Blogger가 문자 엔티티를 그대로 표시하는 문제를 방지합니다.
+
+목록 광고는 `templates/ad-content.html`의 기존 `data-ad-client`와 `data-ad-slot`을 빌드 시 읽어 사용합니다. 6·12·18번째 글 뒤에 다음 글이 있을 때만 광고 영역을 추가하고, 화면에서 200px 이내로 다가오면 광고를 요청합니다. 같은 위치에서 재요청·새로고침하지 않으며 기존 AdSense 로더를 재사용합니다. 광고는 24개 게시물 개수에 포함하지 않습니다. AdSense가 미게재 상태를 반환하거나 로더가 오류를 내면 해당 영역을 숨깁니다. 실제 광고 송출은 AdSense 계정·사이트 승인·재고·방문자 설정에 따라 달라집니다.

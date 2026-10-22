@@ -31,7 +31,10 @@ def fixture(preview, start, count, cursor, *, malicious=False):
     tree = html.fromstring(preview.read_text())
     grid = first(tree, 'post-grid')
     original = copy.deepcopy(first(grid, 'story-card'))
+    ad_attributes = {name: grid.get(name) for name in ('data-ad-client', 'data-ad-slot') if grid.get(name)}
     grid.clear()
+    for name, value in ad_attributes.items():
+        grid.set(name, value)
     grid.set('class', 'post-grid')
     grid.set('data-page-size', '24')
     for index in range(start, start + count):
