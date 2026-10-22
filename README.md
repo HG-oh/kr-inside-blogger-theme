@@ -1,83 +1,84 @@
 # KR Inside Journal
 
-네 Blogger 사이트를 위한 새 독립 테마입니다. 기존 `HG-oh/kr-inside-styles`와 별도 디렉터리·Git 이력·CSS·JavaScript를 사용합니다.
+네 Blogger 사이트의 공통 디자인과 도메인별 메뉴를 관리하는 독립 테마입니다. 기존 `HG-oh/kr-inside-styles`는 수정하지 않습니다.
 
-- 모바일·PC 모두 한 줄에 한 글씩 표시하고 한 페이지에 24개까지 이어 읽는 목록
-- Blogger가 직접 출력하는 게시물, 이미지, 최근 한 달 인기글 5개
-- 같은 블로그의 피드에서 가져오는 최근글 4개; 썸네일 필드가 없으면 본문·요약 이미지 사용, 이미지 오류 시 다음 후보 재시도
-- 원본 메뉴의 실제 목적지 29개 보존; 중복을 정리한 6개 메뉴 그룹
-- 네 도메인별 소개·현재 메뉴 표시, 검색·페이지 이동, 자동/밝게/어둡게 모드
-- 기존 글의 FAQ·상품 카드·목차·표 스타일 지원
-- 원본 광고 위젯과 사이트 인증값 유지; 댓글·분석은 Blogger 기본 기능 사용
-- 글 목록의 6·12·18번째 글 뒤에 기존 반응형 애드센스 단위 배치; 스크롤 접근 시 각 위치에서 한 번만 요청
+CSS와 JavaScript는 `assets/theme.css`, `assets/theme.js` 한 벌을 사용합니다. 도메인별 XML에는 각 사이트의 메뉴·소개·인증·분석·광고 설정을 반영합니다.
 
-적용 도메인: `www.kr-inside.com`, `news.kr-inside.com`, `trip.kr-inside.com`, `item.kr-inside.com`.
+| 사이트 | 설정 파일 | 보존한 원본 메뉴 URL | 메뉴 그룹 | 관심 태그 |
+| --- | --- | ---: | ---: | ---: |
+| www.kr-inside.com | `sites/www.json` | 23 | 9 | 12 |
+| news.kr-inside.com | `sites/news.json` | 23 | 6 | 8 |
+| trip.kr-inside.com | `sites/trip.json` | 31 | 8 | 12 |
+| item.kr-inside.com | `sites/item.json` | 29 | 6 | 4 |
+
+`www`는 경제·생활과 언어별 메뉴, `news`는 전국 모음과 지역별 뉴스, `trip`은 한국어·영어·일본어·베트남어·중국어 여행 메뉴를 유지합니다. 여행 원본의 Blogspot 지역 뉴스 URL도 임의 변경하지 않았습니다. 실제 주소가 없는 About/Contact, 숨겨진 데모 메뉴는 추가하지 않습니다. Home은 각 블로그 홈으로 연결합니다.
+
+세 새 프로필은 각각의 Naver 인증값, 원본 GTM·Clarity ID, 선택 태그와 기존 애드센스 단위를 보존합니다. 제목·게시물·페이지·댓글은 Blogger의 실제 데이터를 사용합니다.
+
+## 공통 기능
+
+- 모바일·PC 한 줄에 한 글, 한 페이지 24개 후 다음 페이지
+- Blogger 기본 인기글 5개, 같은 도메인의 최근글 4개
+- 썸네일 필드가 비어 있으면 본문·요약 이미지 사용
+- 메뉴 +/− 기호의 Blogger 문자 변환 오류 수정
+- 6·12·18번째 글 뒤, 다음 글이 있을 때만 반응형 광고 배치
+- 스크롤 접근 시 각 광고 한 번 요청; 기존 SDK 재사용
+- 자동·밝게·어둡게 화면, 키보드 메뉴 이동, 기존 본문 스타일 지원
+
+목록을 24개까지 채우는 과정은 같은 사이트의 실제 다음 페이지를 사용합니다. 오류가 발생하면 이미 표시한 글을 유지하고 재시도와 다음 페이지 링크를 제공합니다. JavaScript 비활성 시 Blogger가 출력하는 기본 목록과 메뉴를 사용합니다. 광고 송출은 AdSense 상태에 따라 달라집니다.
 
 ## 구성
 
-| 파일 | 수정할 내용 |
+| 경로 | 역할 |
 | --- | --- |
-| `assets/theme.css` | 레이아웃·색상·본문·반응형 스타일 |
-| `assets/theme.js` | 메뉴 보조 동작·화면 모드·최근글·도메인별 소개 |
-| `navigation.json` | 원본 링크를 유지한 메뉴 그룹 |
-| `templates/theme.xml.in` | Blogger 위젯과 화면 구조 |
-| `templates/ad-content.html` | 원본 광고 코드 |
-| `tools/build.py` | XML 생성 및 공개 자산 확인 |
-| `tools/preview.py` | 실제 XML 구조와 예시 데이터로 검증용 HTML 생성 |
-| `tests/validate.py` | 구조·메뉴·반응형·기능 검증 |
-| `tests/listing.py` | 24개 목록·다음 페이지·최근글 본문 이미지 회귀 검사 |
-| `tests/ads.py` | 메뉴 문자·광고 배치·지연 요청·오류 처리 검증 |
-
-`Home`의 이전 `{homeIcon}` 값은 Blogger의 현재 홈 주소로 대체했습니다. 네이버·일본어 경제적자유 중복 링크는 한 번씩 유지하며, 주소가 비어 있던 About/Contact와 숨겨진 이전 Blogspot 홈은 새 메뉴에 넣지 않았습니다.
+| `assets/theme.css`, `assets/theme.js` | 네 사이트가 공유하는 디자인·동작 |
+| `sites/*.json` | 도메인별 원본 메뉴, 소개, 태그, 인증, 분석, 광고 ID |
+| `templates/theme.xml.in` | 공유 Blogger 구조 |
+| `templates/ad-content.html` | 기존 광고 위젯 구조; 프로필의 계정·슬롯 적용 |
+| `navigation.json` | 최초 item 메뉴 추출 기록; 현재 빌드는 `sites/item.json` 사용 |
+| `tools/build.py` | 도메인별 XML 생성과 공개 자산 검증 |
+| `tools/preview.py` | 실제 XML을 예시 데이터로 렌더링 |
+| `tests/domains.py` | 원본에서 독립 추출한 기대값과 도메인별 출력 검증 |
+| `tests/validate.py`, `tests/listing.py`, `tests/ads.py` | 반응형·목록·썸네일·광고 회귀 검사 |
 
 ## XML 생성
 
-Python 3.10 이상이 필요합니다. 기본 XML 생성은 표준 라이브러리만 사용하고 인터넷이 필요하지 않습니다.
+Python 3.10 이상이며, 독립형 XML 생성에는 인터넷이 필요하지 않습니다.
 
 ```bash
-python3 tools/build.py --out dist
+python3 tools/build.py --site all --out dist
+python3 tools/build.py --site www --out dist/www
 ```
 
-`dist/kr-inside-new.xml`은 새 CSS·JS를 포함한 독립형 XML입니다. 공개되지 않은 파일을 참조하지 않으므로 자산 게시 전에도 사용할 수 있습니다. `manifest.json`에 실제 크기와 해시가 기록됩니다. Blogger의 테마에서 이 XML을 업로드합니다. Blogger 레이아웃에서 인기글 위젯 설정과 추가 사이드바·광고 위젯을 관리할 수 있습니다.
+`dist/www/kr-inside-www.xml`, `dist/news/kr-inside-news.xml`, `dist/trip/kr-inside-trip.xml`이 생성됩니다. `item`은 이전 명령과 호환되는 `kr-inside-new.xml`을 사용합니다. `--site`를 생략하면 item을 빌드합니다.
 
-## 새 저장소 게시 후 외부 자산 사용
+독립형 XML에는 동일한 CSS·JS가 포함되어 있어 업로드 즉시 동작합니다. 이 모드에서는 이후 Git 수정이 운영 블로그에 자동 반영되지는 않습니다. 각 manifest에 원본 파일 해시, 보존 링크 수, 자산 해시를 기록합니다.
 
-예정 저장소는 `HG-oh/kr-inside-blogger-theme`입니다. 먼저 새 저장소에 코드를 게시하고, 해당 커밋의 자산이 실제로 제공되는지 확인합니다.
+## 공통 GitHub 자산 게시
+
+공통 저장소: [HG-oh/kr-inside-blogger-theme](https://github.com/HG-oh/kr-inside-blogger-theme). `main`의 공통 CSS·JS를 네 도메인에서 같은 주소로 사용합니다. 변경을 검증한 뒤 이 저장소에 게시합니다.
+
+게시 후 같은 공개 자산 URL을 네 XML에 사용합니다.
 
 ```bash
-python3 tools/build.py --out dist \
-  --asset-base https://cdn.jsdelivr.net/gh/HG-oh/kr-inside-blogger-theme@COMMIT/assets
+python3 tools/build.py --site all --out dist/shared \
+  --asset-base https://cdn.jsdelivr.net/gh/HG-oh/kr-inside-blogger-theme@main/assets
 ```
 
-`COMMIT`은 실제 게시된 커밋 전체 해시로 바꿉니다. 생성기는 두 자산의 HTTPS 응답·콘텐츠 유형·SHA-256이 로컬 파일과 일치할 때만 `kr-inside-new-external.xml`을 만듭니다. 이 XML은 공통 CSS·JS를 네 블로그에서 같은 주소로 사용합니다. 검증한 커밋을 고정하므로 공통 자산의 새 버전을 배포할 때 XML 주소도 갱신합니다. 존재하지 않는 URL의 XML은 배포하지 않습니다.
+생성기는 실제 CSS·JS의 HTTPS 응답, 콘텐츠 유형, SHA-256이 로컬 코드와 일치해야 `*-external.xml`을 생성합니다. 존재하지 않는 주소의 설치용 XML은 제공하지 않습니다.
 
-GitHub API 연결은 가능하지만, 현재 GitHub 앱에는 새 저장소 생성 권한이 없어 생성 요청이 403 `Resource not accessible by integration`으로 거절되었습니다. 새 공개 저장소를 만들고 앱 접근 권한을 부여한 뒤 게시할 수 있습니다. 기존 저장소는 수정하지 않았습니다. 이번 XML은 게시되지 않은 URL을 참조하지 않습니다.
+`@main`은 공통 변경을 각 블로그에 반영하기 위한 주소이며, CDN·브라우저 캐시가 갱신되기까지 시간이 걸릴 수 있습니다. 버전 고정이 필요하면 `main`을 공개된 전체 커밋 해시로 바꿉니다. 고정 모드에서는 다음 버전 배포 시 XML의 주소도 갱신해야 합니다.
 
-## 브라우저 검증
+현재 item XML도 독립형이므로 네 사이트 전체를 외부 공통 자산으로 전환하려면 item용 외부 XML도 한 번 업로드해야 합니다. 기존 CSS 저장소를 사용하는 예전 테마는 변경하지 않습니다.
 
-검증용 의존성과 Linux Chromium(`/usr/bin/chromium`)이 필요합니다. 현재 클라우드 환경에는 설치되어 있습니다.
+## 검증
 
 ```bash
 python3 -m pip install -r requirements-dev.txt
-python3 tools/build.py --out dist
-python3 tools/preview.py --xml dist/kr-inside-new.xml --out dist/previews --inline-assets
-python3 tests/validate.py --xml dist/kr-inside-new.xml --previews dist/previews --report dist/validation-results.json
-python3 tests/listing.py --preview dist/previews/home.html --report dist/listing-results.json
-python3 tests/ads.py --preview dist/previews/home.html --report dist/ads-results.json
+python3 tools/build.py --site all --out dist
+python3 tools/preview.py --xml dist/www/kr-inside-www.xml --out dist/www/previews --inline-assets
 ```
 
-검증 화면의 글과 그림은 예시입니다. 실제 XML에 들어 있는 CSS·JS와 메뉴·위젯 마크업을 검사하지만, 미리보기 렌더러는 Blogger 서버의 템플릿 컴파일러가 아닙니다. 댓글·광고·분석의 실제 서버 동작 및 Blogger 업로드 성공은 이 검사만으로 보증하지 않습니다. 운영 사이트 업로드와 댓글·광고 동작은 실제 Blogger에서 확인해야 합니다.
+다른 도메인도 같은 방식으로 미리보기를 생성한 뒤 `python3 tests/domains.py --root dist --report dist/validation-domains.json`을 실행합니다. `tests/validate.py`는 `--inventory`로 도메인별 URL 기대값을 받을 수 있습니다.
 
-새 테마는 원본의 게시물·페이지 URL과 본문을 수정하지 않습니다. 숨겨진 원본 테마 전용 위젯·난독화 스크립트·jQuery·유효하지 않은 shortcode는 새 테마에서 사용하지 않습니다.
-
-## 게시물 목록과 최근글 수정
-
-Blogger가 홈페이지 글을 5개만 반환하는 경우에도 실제 다음 페이지를 같은 사이트에서 차례로 읽어 24개를 채웁니다. 마지막으로 읽은 페이지의 원래 다음 주소를 유지하므로 목록을 채운 뒤 다음 글로 이동합니다. 마지막 페이지는 남은 글만 표시합니다. 통신 오류가 발생하면 표시된 글을 유지하고 다시 불러오기 버튼과 다음 페이지 링크를 제공합니다. JavaScript를 끈 경우에는 Blogger가 출력한 기본 글 수와 페이지 이동을 사용합니다.
-
-최근글 썸네일은 미디어 필드, 본문, 요약 순으로 찾습니다. 본문은 비활성 템플릿에서 읽고 이미지 주소만 가져옵니다. 본문 스크립트·외부 위젯은 실행하지 않습니다.
-
-## 메뉴 기호와 목록 광고
-
-메뉴의 펼침·접힘 기호는 CSS Unicode escape를 사용해 Blogger가 문자 엔티티를 그대로 표시하는 문제를 방지합니다.
-
-목록 광고는 `templates/ad-content.html`의 기존 `data-ad-client`와 `data-ad-slot`을 빌드 시 읽어 사용합니다. 6·12·18번째 글 뒤에 다음 글이 있을 때만 광고 영역을 추가하고, 화면에서 200px 이내로 다가오면 광고를 요청합니다. 같은 위치에서 재요청·새로고침하지 않으며 기존 AdSense 로더를 재사용합니다. 광고는 24개 게시물 개수에 포함하지 않습니다. AdSense가 미게재 상태를 반환하거나 로더가 오류를 내면 해당 영역을 숨깁니다. 실제 광고 송출은 AdSense 계정·사이트 승인·재고·방문자 설정에 따라 달라집니다.
+검증은 실제 XML 구조와 공유 자산을 사용하되 글·그림·Google 광고·분석 응답은 시험 데이터입니다. 원본 XML의 스크립트는 실행하지 않고 필요한 공개 설정값만 읽었습니다. Blogger 서버의 실제 업로드·광고 송출·댓글 제출까지 검증한 결과는 아닙니다.

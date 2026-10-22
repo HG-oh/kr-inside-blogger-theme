@@ -6,7 +6,7 @@ Original implementation, no Typify/jQuery code or old CSS dependency. All public
 
 Editorial magazine, off-white paper, almost-black typography, restrained forest green accent, crisp dividers, generous spacing, restrained rounded corners. No gratuitous gradients, fake metrics or floating blobs. System Korean fonts; optional serif display accents use installed system fonts. Premium but readable, responsive 360px to 1440px, full dark mode, reduced motion, visible keyboard focus. Base content max-width 1240px.
 
-html[data-theme=light|dark|auto], body[data-view=home|index|post|page|error]. `[hidden]` must always hide. Class `.js` is added by theme.js only. Body .menu-open when enhanced navigation open; `#site-menu` starts native `<details class=site-menu>` so no-JS navigation works. Summary.menu-toggle accessible native toggle, then div.menu-panel, button.menu-close[type=button], nav.menu-groups with 6 details.menu-group > summary + ul > li>a. Header `.site-header > .site-container.header-inner > a.brand` (span.brand-mark “kr.” + span.brand-name “KR INSIDE”) + nav.edition-nav containing four site links + div.header-actions [button.theme-toggle[data-theme-toggle], a.search-shortcut[href=#site-search], #site-menu]. All original29 distinct real menu URLs preserved by root.
+html[data-theme=light|dark|auto], body[data-view=home|index|post|page|error]. `[hidden]` must always hide. Class `.js` is added by theme.js only. Body .menu-open when enhanced navigation open; `#site-menu` starts native `<details class=site-menu>` so no-JS navigation works. Summary.menu-toggle accessible native toggle, then div.menu-panel, button.menu-close[type=button], nav.menu-groups with 6 details.menu-group > summary + ul > li>a. Header `.site-header > .site-container.header-inner > a.brand` (span.brand-mark “kr.” + span.brand-name “KR INSIDE”) + nav.edition-nav containing four site links + div.header-actions [button.theme-toggle[data-theme-toggle], a.search-shortcut[href=#site-search], #site-menu]. Domain menus come from sites/*.json: item29, www23, news23, trip31 original unique URLs. Preserve each exact URL and its own selected labels/verification/tracking settings.
 
 `.site-container > .intro` contains `.eyebrow`, h1[data-edition-title], p[data-edition-description], `.intro-links` links to #latest-posts and #popular-posts. `.edition-nav a[data-edition=www|news|trip|item]` gets aria-current=page fromJS. No interactive controls should depend on hidden tooltips.
 
@@ -29,3 +29,7 @@ Builder produces small installable portable XML with new CSS/JS inline if public
 ## In-list advertisements
 
 The post grid carries data-ad-client/data-ad-slot from the existing ad-content.html, not invented IDs. Add `.feed-ad[data-after-post]` between stories after 6, 12, 18 only when another story follows. Each has label 광고 and a reserved `.ad-frame`. Create its ins.adsbygoogle only near viewport; reuse SDK and request each unit once. Ads never count as posts or replace a post.
+
+## Domain profiles
+
+One CSS/JS pair is shared unchanged by every edition. Site-specific settings live only in sites/*.json and generated XML: menus, intro, topics, verification and source tracking IDs. Never apply the item menu or Naver verification ID to another domain. Public asset URLs must be verified before producing external XML.

@@ -24,8 +24,16 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def navigation() -> tuple[str, set[str]]:
-    data = json.loads((ROOT / 'navigation.json').read_text())
+def site_config(site: str) -> dict:
+    if site not in ('item', 'www', 'news', 'trip'):
+        raise ValueError('Unknown site')
+    data = json.loads((ROOT / 'sites' / (site + '.json')).read_text())
+    if data['id'] != site or data['host'] != site + '.kr-inside.com':
+        raise ValueError('Site identity mismatch')
+    return data
+
+
+def navigation(data: dict) -> tuple[str, set[str]]:
     markup, urls = [], set()
     for group in data['groups']:
         links = []
@@ -36,13 +44,15 @@ def navigation() -> tuple[str, set[str]]:
             urls.add(item['href'])
             links.append('<li><a href="' + html.escape(item['href'], quote=True) + '">' + html.escape(item['label']) + '</a></li>')
         markup.append('<details class="menu-group" open="open"><summary>' + html.escape(group['title']) + '</summary><ul>' + ''.join(links) + '</ul></details>')
-    if len(urls) != 29:
-        raise ValueError('Expected all 29 unique original menu destinations')
+    if not set(data['required_urls']).issubset(urls):
+        raise ValueError('An original menu destination is missing')
     return '\n'.join(markup), urls
 
 
-def ad_widget() -> str:
+def ad_widget(settings: dict) -> str:
     content = (ROOT / 'templates/ad-content.html').read_text()
+    content = re.sub(r'ca-pub-\d+', settings['client'], content)
+    content = re.sub(r'(data-ad-slot=[\"\'])\d+', lambda m: m[1] + settings['slot'], content)
     return '''<section aria-label="광고" class="rail-section ad-section"><p class="ad-label">광고</p>
 <b:section class="ad-widgets" id="advertisement" maxwidgets="1" name="광고" showaddelement="yes">
 <b:widget id="HTML2" locked="false" title="광고" type="HTML" version="2" visible="true">
@@ -51,14 +61,42 @@ def ad_widget() -> str:
 </b:widget></b:section></section>'''
 
 
-def listing_ad_settings() -> str:
+def listing_ad_settings(settings: dict) -> str:
     # Reuse the owner's existing responsive ad unit; never invent publisher IDs.
-    content = (ROOT / 'templates/ad-content.html').read_text()
-    client = re.search(r'data-ad-client=[\"\'](ca-pub-\d+)[\"\']', content)
-    slot = re.search(r'data-ad-slot=[\"\'](\d+)[\"\']', content)
-    if not client or not slot:
+    client, slot = settings['client'], settings['slot']
+    if not re.fullmatch(r'ca-pub-\d+', client) or not re.fullmatch(r'\d+', slot):
         raise ValueError('Existing AdSense client and slot are required for listing ads')
-    return f'data-ad-client="{client[1]}" data-ad-slot="{slot[1]}"'
+    return f'data-ad-client="{client}" data-ad-slot="{slot}"'
+
+
+def link_markup(links: list[dict]) -> str:
+    output = []
+    for link in links:
+        value = link['href']
+        parsed = urlsplit(value)
+        if not ((parsed.scheme == 'https' and parsed.netloc) or
+                (not parsed.scheme and not parsed.netloc and value.startswith(('/', '?')))):
+            raise ValueError('Invalid navigation URL')
+        output.append('<a href="' + html.escape(value, quote=True) + '">' + html.escape(link['label']) + '</a>')
+    return ''.join(output)
+
+
+def tracking_markup(settings: dict) -> tuple[str, str]:
+    head, body = [], ''
+    gtm, clarity = settings.get('google_tag_manager'), settings.get('microsoft_clarity')
+    if gtm:
+        if not re.fullmatch(r'GTM-[A-Z0-9]+', gtm):
+            raise ValueError('Invalid source GTM ID')
+        code = "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','" + gtm + "');"
+        head.append('<script id="kr-gtm" type="text/javascript">\n//<![CDATA[\n' + code + '\n//]]>\n</script>')
+        body = '<noscript><iframe height="0" src="https://www.googletagmanager.com/ns.html?id=' + gtm + '" style="display:none;visibility:hidden" title="Google Tag Manager" width="0"></iframe></noscript>'
+    if clarity:
+        ref = settings.get('clarity_ref', '')
+        if not re.fullmatch(r'[a-z0-9]+', clarity) or (ref and not re.fullmatch(r'[a-z0-9]+', ref)):
+            raise ValueError('Invalid source Clarity ID')
+        code = '(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","' + clarity + ('?ref=' + ref if ref else '') + '");'
+        head.append('<script id="kr-clarity" type="text/javascript">\n//<![CDATA[\n' + code + '\n//]]>\n</script>')
+    return '\n'.join(head), body
 
 
 def verify_assets(base: str) -> list[dict]:
@@ -80,13 +118,15 @@ def verify_assets(base: str) -> list[dict]:
     return verified
 
 
-def build(output: Path, asset_base: str | None = None) -> dict:
+def build(output: Path, asset_base: str | None = None, site: str = 'item') -> dict:
+    profile = site_config(site)
     source = (ROOT / 'templates/theme.xml.in').read_text()
     css = (ROOT / 'assets/theme.css').read_text()
     js = (ROOT / 'assets/theme.js').read_text()
     if ']]>' in css or ']]>' in js or '</script' in js.lower():
         raise ValueError('Unsafe inline asset boundary')
-    menu, urls = navigation()
+    menu, urls = navigation(profile['navigation'])
+    tracking_head, tracking_body = tracking_markup(profile['tracking'])
     verified = verify_assets(asset_base) if asset_base else []
     if asset_base:
         base = html.escape(asset_base.rstrip('/'), quote=True)
@@ -99,9 +139,18 @@ def build(output: Path, asset_base: str | None = None) -> dict:
         '@@STYLES@@': styles,
         '@@SCRIPTS@@': scripts,
         '@@MENU@@': menu,
-        '@@VERIFICATION@@': '<meta content="50883d0c7a986cef2c594d5b344a1a9a3dca774b" name="naver-site-verification"/>',
-        '@@AD_WIDGET@@': ad_widget(),
-        '@@LISTING_AD_SETTINGS@@': listing_ad_settings(),
+        '@@VERIFICATION@@': '\n'.join('<meta name="' + html.escape(meta['name'], quote=True) + '" content="' + html.escape(meta['content'], quote=True) + '"/>' for meta in profile['verification']),
+        '@@AD_WIDGET@@': ad_widget(profile['ads']),
+        '@@LISTING_AD_SETTINGS@@': listing_ad_settings(profile['ads']),
+        '@@TRACKING_HEAD@@': tracking_head,
+        '@@TRACKING_BODY@@': tracking_body,
+        '@@SITE_ID@@': site,
+        '@@BRAND_CAPTION@@': html.escape(profile['brand_caption']),
+        '@@INTRO_EYEBROW@@': html.escape(profile['intro']['eyebrow']),
+        '@@INTRO_TITLE@@': html.escape(profile['intro']['title']),
+        '@@INTRO_DESCRIPTION@@': html.escape(profile['intro']['description']),
+        '@@TOPIC_LINKS@@': link_markup(profile['topics']),
+        '@@FOOTER_MENU@@': link_markup(profile['footer_links']),
     }
     for token, value in replacements.items():
         if source.count(token) != 1:
@@ -126,17 +175,21 @@ def build(output: Path, asset_base: str | None = None) -> dict:
         if legacy in source.lower():
             raise ValueError('Old theme dependency remains: ' + legacy)
     output.mkdir(parents=True, exist_ok=True)
-    filename = 'kr-inside-new-external.xml' if asset_base else 'kr-inside-new.xml'
+    stem = 'kr-inside-new' if site == 'item' else 'kr-inside-' + site
+    filename = stem + ('-external' if asset_base else '') + '.xml'
     payload = source.encode('utf-8')
     (output / filename).write_bytes(payload)
     manifest = {
-        'theme': 'KR Inside Journal', 'version': '1.2.0',
+        'theme': 'KR Inside Journal', 'version': '1.3.0',
+        'site': site, 'host': profile['host'], 'source': profile['source'],
         'mode': 'verified-external' if asset_base else 'portable',
         'xml': {'filename': filename, 'bytes': len(payload), 'sha256': digest(payload)},
         'assets': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p.read_bytes())}
                    for p in (ROOT / 'assets/theme.css', ROOT / 'assets/theme.js')},
         'verified_public_assets': verified,
-        'original_menu_destinations_retained': len(urls),
+        'original_menu_destinations_retained': len(set(profile['navigation']['required_urls'])),
+        'menu_groups': len(profile['navigation']['groups']),
+        'topic_links': len(profile['topics']),
         'widgets': [{'id': w.get('id'), 'type': w.get('type')} for w in widgets],
         'blogger_import_performed': False,
     }
@@ -148,5 +201,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, default=ROOT / 'dist')
     parser.add_argument('--asset-base', help='Already published directory; bytes are verified before output')
+    parser.add_argument('--site', choices=('item', 'www', 'news', 'trip', 'all'), default='item')
     args = parser.parse_args()
-    print(json.dumps(build(args.out, args.asset_base), ensure_ascii=False, indent=2))
+    result = [build(args.out / site, args.asset_base, site) for site in ('item', 'www', 'news', 'trip')] if args.site == 'all' else build(args.out, args.asset_base, args.site)
+    print(json.dumps(result, ensure_ascii=False, indent=2))

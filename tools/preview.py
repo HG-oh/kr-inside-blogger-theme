@@ -291,7 +291,7 @@ class Renderer:
             if not self.inline_assets:
                 return self.stylesheet()
             self.css_written = True
-        if tag == "script" and node.get("type", "text/javascript") not in {"application/ld+json", "application/json"}:
+        if tag == "script" and node.get("id") == "kr-theme-runtime":
             if not self.inline_assets:
                 return self.runtime()
             self.js_written = True

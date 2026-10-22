@@ -137,13 +137,16 @@
     };
     const edition = editions[host];
     if (!edition) return;
+    const hasProfileIntro = root.dataset.edition === edition[0];
     root.dataset.edition = edition[0];
     document.querySelectorAll('.edition-nav a[data-edition]').forEach(link => {
       if (link.dataset.edition === edition[0]) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    document.querySelectorAll('[data-edition-title]').forEach(node => { node.textContent = edition[1]; });
-    document.querySelectorAll('[data-edition-description]').forEach(node => { node.textContent = edition[2]; });
+    if (!hasProfileIntro) {
+      document.querySelectorAll('[data-edition-title]').forEach(node => { node.textContent = edition[1]; });
+      document.querySelectorAll('[data-edition-description]').forEach(node => { node.textContent = edition[2]; });
+    }
   }
 
   // A template's contents are inert: never attach parsed feed/article nodes.

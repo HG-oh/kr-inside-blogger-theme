@@ -1,0 +1,229 @@
+{
+  "id": "news",
+  "host": "news.kr-inside.com",
+  "source": {
+    "filename": "news.xml",
+    "bytes": 779381,
+    "sha256": "c76bd1d403d17e39bf47a56974c2682137fb5e3f8705bebb7725a28876851b9c"
+  },
+  "brand_caption": "부동산 뉴스",
+  "intro": {
+    "eyebrow": "PROPERTY & LOCAL NEWS",
+    "title": "지금 알아야 할, 부동산의 흐름.",
+    "description": "서울부터 부산까지, 지역별 부동산 소식과 도시의 변화를 한눈에."
+  },
+  "navigation": {
+    "groups": [
+      {
+        "title": "뉴스 홈",
+        "links": [
+          {
+            "label": "뉴스 홈",
+            "href": "https://news.kr-inside.com/"
+          },
+          {
+            "label": "오늘의 전국 부동산 뉴스 모음",
+            "href": "https://news.kr-inside.com/2025/04/main.html"
+          }
+        ]
+      },
+      {
+        "title": "지역별 부동산 뉴스",
+        "links": [
+          {
+            "label": "서울 부동산 뉴스",
+            "href": "https://news.kr-inside.com/search/label/%EC%84%9C%EC%9A%B8%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+          },
+          {
+            "label": "부산 부동산 뉴스",
+            "href": "https://news.kr-inside.com/search/label/%EB%B6%80%EC%82%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+          },
+          {
+            "label": "대전 부동산 뉴스",
+            "href": "https://news.kr-inside.com/search/label/%EB%8C%80%EC%A0%84%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+          },
+          {
+            "label": "대구 부동산 뉴스",
+            "href": "https://news.kr-inside.com/search/label/%EB%8C%80%EA%B5%AC%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+          },
+          {
+            "label": "광주 부동산 뉴스",
+            "href": "https://news.kr-inside.com/search/label/%EA%B4%91%EC%A3%BC%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+          },
+          {
+            "label": "인천 부동산 뉴스",
+            "href": "https://news.kr-inside.com/search/label/%EC%9D%B8%EC%B2%9C%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+          },
+          {
+            "label": "울산 부동산 뉴스",
+            "href": "https://news.kr-inside.com/search/label/%EC%9A%B8%EC%82%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+          },
+          {
+            "label": "경기 부동산 뉴스",
+            "href": "https://news.kr-inside.com/search/label/%EA%B2%BD%EA%B8%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+          }
+        ]
+      },
+      {
+        "title": "경제·생활",
+        "links": [
+          {
+            "label": "경제적자유",
+            "href": "https://www.kr-inside.com/search/label/경제적자유"
+          },
+          {
+            "label": "부산시 고시 공고",
+            "href": "https://kr-inside.com/search/label/부산시%20고시%20공고"
+          },
+          {
+            "label": "부산시 아파트 분양",
+            "href": "https://kr-inside.com/search/label/부산시%20아파트%20분양"
+          },
+          {
+            "label": "부산울산경남개발정보",
+            "href": "https://kr-inside.com/search/label/부산울산경남개발정보"
+          },
+          {
+            "label": "손품발품임장기",
+            "href": "https://kr-inside.com/search/label/손품발품임장기"
+          },
+          {
+            "label": "이런저런생각",
+            "href": "https://kr-inside.com/search/label/이런저런생각"
+          },
+          {
+            "label": "재테크 투자후기",
+            "href": "https://kr-inside.com/search/label/재테크%20투자후기"
+          }
+        ]
+      },
+      {
+        "title": "여행",
+        "links": [
+          {
+            "label": "국내여행",
+            "href": "https://trip.kr-inside.com/search/label/%EA%B5%AD%EB%82%B4%EC%97%AC%ED%96%89"
+          },
+          {
+            "label": "해외여행",
+            "href": "https://trip.kr-inside.com/search/label/%ED%95%B4%EC%99%B8%EC%97%AC%ED%96%89"
+          }
+        ]
+      },
+      {
+        "title": "日本語",
+        "links": [
+          {
+            "label": "日本語",
+            "href": "https://kr-inside.com/search/label/%E6%97%A5%E6%9C%AC%E8%AA%9E"
+          },
+          {
+            "label": "国内旅行",
+            "href": "https://kr-inside.com/search/label/%E5%9B%BD%E5%86%85%E6%97%85%E8%A1%8C"
+          },
+          {
+            "label": "経済的自由",
+            "href": "https://kr-inside.com/search/label/%E7%B5%8C%E6%B8%88%E7%9A%84%E8%87%AA%E7%94%B1"
+          }
+        ]
+      },
+      {
+        "title": "다른 채널",
+        "links": [
+          {
+            "label": "오늘의 인기상품",
+            "href": "https://item.kr-inside.com/"
+          },
+          {
+            "label": "Go to Naver Blog",
+            "href": "https://blog.naver.com/yak-bang"
+          }
+        ]
+      }
+    ],
+    "required_urls": [
+      "https://blog.naver.com/yak-bang",
+      "https://item.kr-inside.com/",
+      "https://kr-inside.com/search/label/%E5%9B%BD%E5%86%85%E6%97%85%E8%A1%8C",
+      "https://kr-inside.com/search/label/%E6%97%A5%E6%9C%AC%E8%AA%9E",
+      "https://kr-inside.com/search/label/%E7%B5%8C%E6%B8%88%E7%9A%84%E8%87%AA%E7%94%B1",
+      "https://kr-inside.com/search/label/부산시%20고시%20공고",
+      "https://kr-inside.com/search/label/부산시%20아파트%20분양",
+      "https://kr-inside.com/search/label/부산울산경남개발정보",
+      "https://kr-inside.com/search/label/손품발품임장기",
+      "https://kr-inside.com/search/label/이런저런생각",
+      "https://kr-inside.com/search/label/재테크%20투자후기",
+      "https://news.kr-inside.com/2025/04/main.html",
+      "https://news.kr-inside.com/search/label/%EA%B2%BD%EA%B8%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4",
+      "https://news.kr-inside.com/search/label/%EA%B4%91%EC%A3%BC%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4",
+      "https://news.kr-inside.com/search/label/%EB%8C%80%EA%B5%AC%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4",
+      "https://news.kr-inside.com/search/label/%EB%8C%80%EC%A0%84%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4",
+      "https://news.kr-inside.com/search/label/%EB%B6%80%EC%82%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4",
+      "https://news.kr-inside.com/search/label/%EC%84%9C%EC%9A%B8%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4",
+      "https://news.kr-inside.com/search/label/%EC%9A%B8%EC%82%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4",
+      "https://news.kr-inside.com/search/label/%EC%9D%B8%EC%B2%9C%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4",
+      "https://trip.kr-inside.com/search/label/%EA%B5%AD%EB%82%B4%EC%97%AC%ED%96%89",
+      "https://trip.kr-inside.com/search/label/%ED%95%B4%EC%99%B8%EC%97%AC%ED%96%89",
+      "https://www.kr-inside.com/search/label/경제적자유"
+    ]
+  },
+  "verification": [
+    {
+      "name": "naver-site-verification",
+      "content": "3a4e424753c00cf9cb8f542f83cd76228db66171"
+    }
+  ],
+  "tracking": {
+    "google_tag_manager": "GTM-PT6SHJ9W",
+    "microsoft_clarity": "sges1u0ufq",
+    "clarity_ref": "bwt"
+  },
+  "topics": [
+    {
+      "label": "경기 부동산 뉴스",
+      "href": "https://news.kr-inside.com/search/label/%EA%B2%BD%EA%B8%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+    },
+    {
+      "label": "광주 부동산 뉴스",
+      "href": "https://news.kr-inside.com/search/label/%EA%B4%91%EC%A3%BC%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+    },
+    {
+      "label": "대구 부동산 뉴스",
+      "href": "https://news.kr-inside.com/search/label/%EB%8C%80%EA%B5%AC%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+    },
+    {
+      "label": "대전 부동산 뉴스",
+      "href": "https://news.kr-inside.com/search/label/%EB%8C%80%EC%A0%84%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+    },
+    {
+      "label": "부산 부동산 뉴스",
+      "href": "https://news.kr-inside.com/search/label/%EB%B6%80%EC%82%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+    },
+    {
+      "label": "서울 부동산 뉴스",
+      "href": "https://news.kr-inside.com/search/label/%EC%84%9C%EC%9A%B8%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+    },
+    {
+      "label": "울산 부동산 뉴스",
+      "href": "https://news.kr-inside.com/search/label/%EC%9A%B8%EC%82%B0%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+    },
+    {
+      "label": "인천 부동산 뉴스",
+      "href": "https://news.kr-inside.com/search/label/%EC%9D%B8%EC%B2%9C%20%EB%B6%80%EB%8F%99%EC%82%B0%20%EB%89%B4%EC%8A%A4"
+    }
+  ],
+  "footer_links": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "RTL Version",
+      "href": "?hl=ar"
+    }
+  ],
+  "ads": {
+    "client": "ca-pub-8621160875847917",
+    "slot": "7800800754"
+  }
+}

@@ -62,11 +62,11 @@ def validate_xml(path, inventory):
     declared = set(tree.xpath('//b:includable/@id', namespaces=NS))
     unknown = sorted(includes - declared - NATIVE_INCLUDES)
     assert not unknown, ('Unresolved includable names', unknown)
-    source_urls = inventory.get('urls') or [row['href'] for row in inventory['link_lists']['LinkList101']
+    source_urls = inventory.get('urls') or inventory.get('navigation', {}).get('required_urls') or [row['href'] for row in inventory['link_lists']['LinkList101']
                                            if not row['is_placeholder']]
     expected = {normalized_url(value) for value in source_urls}
     actual = {normalized_url(value) for value in tree.xpath('//h:a/@href', namespaces=NS)}
-    assert len(expected) == 29
+    assert expected, 'Original menu inventory must not be empty'
     assert expected <= actual, ('Lost original menu URLs', sorted(expected - actual))
     assert '{homeIcon}' not in text, 'Old runtime-only home macro remains'
     assert not re.search(r'(kr-inside-styles|typify-runtime|typify-plugins|jquery)', text, re.I)
@@ -303,8 +303,10 @@ def main():
     parser.add_argument('--previews', type=Path, default=REVIEW / 'previews')
     parser.add_argument('--report', type=Path, default=REVIEW / 'validation-results.json')
     parser.add_argument('--quick', action='store_true')
+    parser.add_argument('--inventory', type=Path, default=ROOT / 'tests/original-menu-urls.json',
+                        help='Original menu inventory or site profile; defaults to the item inventory')
     args = parser.parse_args()
-    inventory = json.loads((ROOT / 'tests/original-menu-urls.json').read_text())
+    inventory = json.loads(args.inventory.read_text())
     report = {'status': 'running', 'scope': 'Synthetic representative HTML; no Blogger server import', 'cases': []}
     args.report.parent.mkdir(parents=True, exist_ok=True)
     try:

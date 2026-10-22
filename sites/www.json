@@ -1,0 +1,256 @@
+{
+  "id": "www",
+  "host": "www.kr-inside.com",
+  "source": {
+    "filename": "www.xml",
+    "bytes": 811122,
+    "sha256": "b3e498be1bd8ba154a3a703a8bc87495c73125e7192acc56356f86726df2a59c"
+  },
+  "brand_caption": "경제·생활",
+  "intro": {
+    "eyebrow": "ECONOMY & LIFE",
+    "title": "경제를 읽고, 내일을 준비하다.",
+    "description": "부동산과 재테크, 직접 경험하고 기록한 경제적 자유의 이야기."
+  },
+  "navigation": {
+    "groups": [
+      {
+        "title": "경제적자유",
+        "links": [
+          {
+            "label": "경제적자유",
+            "href": "https://www.kr-inside.com/search/label/%EA%B2%BD%EC%A0%9C%EC%A0%81%EC%9E%90%EC%9C%A0"
+          },
+          {
+            "label": "부산시 고시 공고",
+            "href": "https://kr-inside.com/search/label/부산시%20고시%20공고"
+          },
+          {
+            "label": "부산시 아파트 분양",
+            "href": "https://kr-inside.com/search/label/부산시%20아파트%20분양"
+          },
+          {
+            "label": "부산울산경남개발정보",
+            "href": "https://kr-inside.com/search/label/부산울산경남개발정보"
+          },
+          {
+            "label": "손품발품임장기",
+            "href": "https://kr-inside.com/search/label/손품발품임장기"
+          },
+          {
+            "label": "이런저런생각",
+            "href": "https://kr-inside.com/search/label/이런저런생각"
+          },
+          {
+            "label": "재테크 투자후기",
+            "href": "https://kr-inside.com/search/label/재테크%20투자후기"
+          }
+        ]
+      },
+      {
+        "title": "오늘의 전국 부동산 뉴스 모음",
+        "links": [
+          {
+            "label": "오늘의 전국 부동산 뉴스 모음",
+            "href": "https://news.kr-inside.com/2025/04/main.html"
+          }
+        ]
+      },
+      {
+        "title": "국내여행",
+        "links": [
+          {
+            "label": "국내여행",
+            "href": "https://trip.kr-inside.com/"
+          }
+        ]
+      },
+      {
+        "title": "English",
+        "links": [
+          {
+            "label": "English",
+            "href": "https://kr-inside.com/search/label/English"
+          },
+          {
+            "label": "Domestic travel",
+            "href": "https://kr-inside.com/search/label/Domestic%20Travel"
+          },
+          {
+            "label": "Financial Freedom",
+            "href": "https://kr-inside.com/search/label/Financial%20Freedom"
+          }
+        ]
+      },
+      {
+        "title": "日本語",
+        "links": [
+          {
+            "label": "日本語",
+            "href": "https://kr-inside.com/search/label/%E6%97%A5%E6%9C%AC%E8%AA%9E"
+          },
+          {
+            "label": "国内旅行",
+            "href": "https://kr-inside.com/search/label/%E5%9B%BD%E5%86%85%E6%97%85%E8%A1%8C"
+          },
+          {
+            "label": "経済的自由",
+            "href": "https://kr-inside.com/search/label/%E7%B5%8C%E6%B8%88%E7%9A%84%E8%87%AA%E7%94%B1"
+          }
+        ]
+      },
+      {
+        "title": "Tiếng Việt",
+        "links": [
+          {
+            "label": "Tiếng Việt",
+            "href": "https://kr-inside.com/search/label/Ti%E1%BA%BFng%20Vi%E1%BB%87t"
+          },
+          {
+            "label": "Du lịch nội địa",
+            "href": "https://kr-inside.com/search/label/Du%20l%E1%BB%8Bch%20n%E1%BB%99i%20%C4%91%E1%BB%8Ba"
+          },
+          {
+            "label": "Tự do tài chính",
+            "href": "https://kr-inside.com/search/label/T%E1%BB%B1%20do%20t%C3%A0i%20ch%C3%ADnh"
+          }
+        ]
+      },
+      {
+        "title": "中文",
+        "links": [
+          {
+            "label": "中文",
+            "href": "https://kr-inside.com/search/label/中文"
+          },
+          {
+            "label": "國內旅行",
+            "href": "https://kr-inside.com/search/label/國內旅行"
+          },
+          {
+            "label": "經濟自由",
+            "href": "https://kr-inside.com/search/label/經濟自由"
+          }
+        ]
+      },
+      {
+        "title": "오늘의 인기상품",
+        "links": [
+          {
+            "label": "오늘의 인기상품",
+            "href": "https://item.kr-inside.com/"
+          }
+        ]
+      },
+      {
+        "title": "Go to Naver Blog",
+        "links": [
+          {
+            "label": "Go to Naver Blog",
+            "href": "https://blog.naver.com/yak-bang"
+          }
+        ]
+      }
+    ],
+    "required_urls": [
+      "https://www.kr-inside.com/search/label/%EA%B2%BD%EC%A0%9C%EC%A0%81%EC%9E%90%EC%9C%A0",
+      "https://kr-inside.com/search/label/부산시%20고시%20공고",
+      "https://kr-inside.com/search/label/부산시%20아파트%20분양",
+      "https://kr-inside.com/search/label/부산울산경남개발정보",
+      "https://kr-inside.com/search/label/손품발품임장기",
+      "https://kr-inside.com/search/label/이런저런생각",
+      "https://kr-inside.com/search/label/재테크%20투자후기",
+      "https://news.kr-inside.com/2025/04/main.html",
+      "https://trip.kr-inside.com/",
+      "https://kr-inside.com/search/label/English",
+      "https://kr-inside.com/search/label/Domestic%20Travel",
+      "https://kr-inside.com/search/label/Financial%20Freedom",
+      "https://kr-inside.com/search/label/%E6%97%A5%E6%9C%AC%E8%AA%9E",
+      "https://kr-inside.com/search/label/%E5%9B%BD%E5%86%85%E6%97%85%E8%A1%8C",
+      "https://kr-inside.com/search/label/%E7%B5%8C%E6%B8%88%E7%9A%84%E8%87%AA%E7%94%B1",
+      "https://kr-inside.com/search/label/Ti%E1%BA%BFng%20Vi%E1%BB%87t",
+      "https://kr-inside.com/search/label/Du%20l%E1%BB%8Bch%20n%E1%BB%99i%20%C4%91%E1%BB%8Ba",
+      "https://kr-inside.com/search/label/T%E1%BB%B1%20do%20t%C3%A0i%20ch%C3%ADnh",
+      "https://kr-inside.com/search/label/中文",
+      "https://kr-inside.com/search/label/國內旅行",
+      "https://kr-inside.com/search/label/經濟自由",
+      "https://item.kr-inside.com/",
+      "https://blog.naver.com/yak-bang"
+    ]
+  },
+  "verification": [
+    {
+      "name": "naver-site-verification",
+      "content": "489748095966e0969d561fd8f3f884774add7926"
+    }
+  ],
+  "tracking": {
+    "google_tag_manager": "GTM-PT6SHJ9W",
+    "microsoft_clarity": "sges1u0ufq",
+    "clarity_ref": "bwt"
+  },
+  "topics": [
+    {
+      "label": "Du lịch nội địa",
+      "href": "https://www.kr-inside.com/search/label/Du%20l%E1%BB%8Bch%20n%E1%BB%99i%20%C4%91%E1%BB%8Ba"
+    },
+    {
+      "label": "English",
+      "href": "https://www.kr-inside.com/search/label/English"
+    },
+    {
+      "label": "Financial Freedom",
+      "href": "https://www.kr-inside.com/search/label/Financial%20Freedom"
+    },
+    {
+      "label": "Tiếng Việt",
+      "href": "https://www.kr-inside.com/search/label/Ti%E1%BA%BFng%20Vi%E1%BB%87t"
+    },
+    {
+      "label": "Tự do tài chính",
+      "href": "https://www.kr-inside.com/search/label/T%E1%BB%B1%20do%20t%C3%A0i%20ch%C3%ADnh"
+    },
+    {
+      "label": "国内旅行",
+      "href": "https://www.kr-inside.com/search/label/%E5%9B%BD%E5%86%85%E6%97%85%E8%A1%8C"
+    },
+    {
+      "label": "日本語",
+      "href": "https://www.kr-inside.com/search/label/%E6%97%A5%E6%9C%AC%E8%AA%9E"
+    },
+    {
+      "label": "経済的自由",
+      "href": "https://www.kr-inside.com/search/label/%E7%B5%8C%E6%B8%88%E7%9A%84%E8%87%AA%E7%94%B1"
+    },
+    {
+      "label": "국내여행",
+      "href": "https://www.kr-inside.com/search/label/%EA%B5%AD%EB%82%B4%EC%97%AC%ED%96%89"
+    },
+    {
+      "label": "부산시 고시 공고",
+      "href": "https://www.kr-inside.com/search/label/%EB%B6%80%EC%82%B0%EC%8B%9C%20%EA%B3%A0%EC%8B%9C%20%EA%B3%B5%EA%B3%A0"
+    },
+    {
+      "label": "부산울산경남개발정보",
+      "href": "https://www.kr-inside.com/search/label/%EB%B6%80%EC%82%B0%EC%9A%B8%EC%82%B0%EA%B2%BD%EB%82%A8%EA%B0%9C%EB%B0%9C%EC%A0%95%EB%B3%B4"
+    },
+    {
+      "label": "정보글",
+      "href": "https://www.kr-inside.com/search/label/%EC%A0%95%EB%B3%B4%EA%B8%80"
+    }
+  ],
+  "footer_links": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "RTL Version",
+      "href": "?hl=ar"
+    }
+  ],
+  "ads": {
+    "client": "ca-pub-8621160875847917",
+    "slot": "7800800754"
+  }
+}

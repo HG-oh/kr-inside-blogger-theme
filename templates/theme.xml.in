@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateVersion='1.0.0' data-theme='auto' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' b:templateVersion='1.3.0' data-edition='@@SITE_ID@@' data-theme='auto' expr:dir='data:blog.languageDirection' expr:lang='data:blog.locale' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
   <meta content='width=device-width, initial-scale=1' name='viewport'/>
   <meta content='light dark' name='color-scheme'/>
   <b:include data='blog' name='all-head-content'/>
   <title><data:view.title.escaped/></title>
   @@VERIFICATION@@
+  @@TRACKING_HEAD@@
   @@STYLES@@
   <b:template-skin><![CDATA[
 body#layout .content-layout{display:flex;gap:20px}body#layout #main-content{width:65%}body#layout .discovery-rail{width:35%}body#layout .site-header,body#layout .intro,body#layout .mobile-shortcuts,body#layout .site-footer,body#layout .search-section{display:none}body#layout .section{margin:12px 0;padding:8px}
   ]]></b:template-skin>
 </head>
 <body expr:data-view='data:view.isHomepage ? &quot;home&quot; : data:view.isPost ? &quot;post&quot; : data:view.isPage ? &quot;page&quot; : data:view.isError ? &quot;error&quot; : &quot;index&quot;'>
+  @@TRACKING_BODY@@
   <a class='skip-link' href='#main-content'>본문으로 건너뛰기</a>
   <header class='site-header'>
     <div class='site-container header-inner'>
-      <a aria-label='현재 블로그 홈' class='brand' expr:href='data:blog.homepageUrl'><span class='brand-mark'>kr<span>.</span></span><span class='brand-name'>KR INSIDE<span class='brand-caption'>A closer look at everyday life</span></span></a>
+      <a aria-label='현재 블로그 홈' class='brand' expr:href='data:blog.homepageUrl'><span class='brand-mark'>kr<span>.</span></span><span class='brand-name'>KR INSIDE<span class='brand-caption'>@@BRAND_CAPTION@@</span></span></a>
       <nav aria-label='KR Inside 블로그' class='edition-nav'>
         <a data-edition='www' href='https://www.kr-inside.com/'>경제·생활</a>
         <a data-edition='news' href='https://news.kr-inside.com/'>부동산 뉴스</a>
@@ -39,9 +41,9 @@ body#layout .content-layout{display:flex;gap:20px}body#layout #main-content{widt
   <div class='site-container'>
     <b:if cond='data:view.isHomepage'>
       <section class='intro'>
-        <p class='eyebrow'>THE KR INSIDE JOURNAL</p>
-        <h1 data-edition-title=''>일상에 깊이를 더하는 이야기.</h1>
-        <p data-edition-description=''>경제와 부동산, 새로운 여행지와 좋은 상품까지. 알아두면 쓸모 있는 이야기를 만나보세요.</p>
+        <p class='eyebrow'>@@INTRO_EYEBROW@@</p>
+        <h1 data-edition-title=''>@@INTRO_TITLE@@</h1>
+        <p data-edition-description=''>@@INTRO_DESCRIPTION@@</p>
         <div class='intro-links'><a href='#latest-posts'>새로 올라온 이야기 <span aria-hidden='true'>↗</span></a><a href='#popular-posts'>많이 읽은 이야기 <span aria-hidden='true'>↗</span></a></div>
       </section>
     </b:if>
@@ -146,7 +148,7 @@ body#layout .content-layout{display:flex;gap:20px}body#layout #main-content{widt
           <div data-feed-url='/feeds/posts/default?alt=json&amp;max-results=4' data-limit='4' data-recent-posts=''><a class='feed-fallback' href='/search'>최근 게시물 전체 보기 →</a></div>
           <noscript><p class='section-note'>위 링크에서 최근 게시물을 확인할 수 있습니다.</p></noscript>
         </section>
-        <section class='rail-section topic-section'><p class='eyebrow'>EXPLORE MORE</p><h2>관심 있는 이야기로</h2><div class='topic-links'><a href='https://www.kr-inside.com/search/label/경제적자유'>경제적 자유 <span aria-hidden='true'>↗</span></a><a href='https://news.kr-inside.com/2025/04/main.html'>전국 부동산 뉴스 <span aria-hidden='true'>↗</span></a><a href='https://trip.kr-inside.com/'>새로운 여행지 <span aria-hidden='true'>↗</span></a><a href='https://item.kr-inside.com/'>오늘의 좋은 상품 <span aria-hidden='true'>↗</span></a></div></section>
+        <section class='rail-section topic-section'><p class='eyebrow'>EXPLORE MORE</p><h2>관심 있는 이야기로</h2><div class='topic-links'>@@TOPIC_LINKS@@</div></section>
         <b:section class='extra-section' id='sidebar-extras' name='추가 사이드바 위젯' showaddelement='yes'/>
         @@AD_WIDGET@@
       </aside>
@@ -154,7 +156,7 @@ body#layout .content-layout{display:flex;gap:20px}body#layout #main-content{widt
     <section class='search-section' id='site-search'><div><p class='eyebrow'>FIND YOUR NEXT READ</p><h2>어떤 이야기가 궁금하세요?</h2></div><form action='/search' class='search-form' method='get' role='search'><label class='sr-only' for='search-query'>블로그 검색어</label><input id='search-query' name='q' placeholder='관심 있는 키워드를 검색하세요' required='required' type='search'/><button type='submit'>검색 <span aria-hidden='true'>↗</span></button></form></section>
   </div>
   <nav aria-label='빠른 이동' class='mobile-shortcuts'><a href='#main-content'>새 글</a><a href='#popular-posts'>인기글</a><a href='#site-search'>검색</a></nav>
-  <footer class='site-footer'><div class='site-container footer-inner'><div><a class='brand' expr:href='data:blog.homepageUrl'><span class='brand-mark'>kr<span>.</span></span><span class='brand-name'>KR INSIDE</span></a><p>일상에 깊이를 더하는 이야기.</p><small>© <span data-year=''>2026</span> <data:blog.title/>. Powered by Blogger.</small></div><nav aria-label='다른 블로그와 소식' class='footer-links'><a href='https://www.kr-inside.com/'>경제·생활</a><a href='https://news.kr-inside.com/'>부동산 뉴스</a><a href='https://trip.kr-inside.com/'>여행</a><a href='https://item.kr-inside.com/'>좋은 상품</a><a href='https://blog.naver.com/yak-bang' rel='noopener' target='_blank'>네이버 블로그 ↗</a><a href='?hl=ar'>العربية</a><a href='/feeds/posts/default'>RSS</a></nav></div></footer>
+  <footer class='site-footer'><div class='site-container footer-inner'><div><a class='brand' expr:href='data:blog.homepageUrl'><span class='brand-mark'>kr<span>.</span></span><span class='brand-name'>KR INSIDE</span></a><p>일상에 깊이를 더하는 이야기.</p><small>© <span data-year=''>2026</span> <data:blog.title/>. Powered by Blogger.</small></div><nav aria-label='다른 블로그와 소식' class='footer-links'><a href='https://www.kr-inside.com/'>경제·생활</a><a href='https://news.kr-inside.com/'>부동산 뉴스</a><a href='https://trip.kr-inside.com/'>여행</a><a href='https://item.kr-inside.com/'>좋은 상품</a><a href='https://blog.naver.com/yak-bang' rel='noopener' target='_blank'>네이버 블로그 ↗</a>@@FOOTER_MENU@@<a href='/feeds/posts/default'>RSS</a></nav></div></footer>
   <b:if cond='data:blog.analyticsAccountNumber'><b:include data='blog' name='google-analytics'/></b:if>
   @@SCRIPTS@@
 </body>
