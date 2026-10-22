@@ -1,0 +1,182 @@
+{
+  "_fixture": {
+    "source": "https://item.kr-inside.com/feeds/posts/default?alt=json&max-results=4",
+    "note": "Actual title/link/date/image fields; content shortened to first two image tags for a small reproducible regression fixture. These four entries have no media$thumbnail field."
+  },
+  "feed": {
+    "entry": [
+      {
+        "title": {
+          "type": "text",
+          "$t": "세포랩 바이오제닉 에센스 90% 155ml 더블기획! 촉촉 퍼스트에센스 44%할인 14만대대 후기 많은 선택"
+        },
+        "link": [
+          {
+            "rel": "replies",
+            "type": "application/atom+xml",
+            "href": "https://item.kr-inside.com/feeds/9025579545303243891/comments/default",
+            "title": "댓글"
+          },
+          {
+            "rel": "replies",
+            "type": "text/html",
+            "href": "https://item.kr-inside.com/2026/04/90-155ml-44-14.html#comment-form",
+            "title": "0개의 덧글"
+          },
+          {
+            "rel": "edit",
+            "type": "application/atom+xml",
+            "href": "https://www.blogger.com/feeds/2506209856714631275/posts/default/9025579545303243891"
+          },
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://www.blogger.com/feeds/2506209856714631275/posts/default/9025579545303243891"
+          },
+          {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://item.kr-inside.com/2026/04/90-155ml-44-14.html",
+            "title": "세포랩 바이오제닉 에센스 90% 155ml 더블기획! 촉촉 퍼스트에센스 44%할인 14만대대 후기 많은 선택"
+          }
+        ],
+        "published": {
+          "$t": "2026-04-23T15:30:54.716+09:00"
+        },
+        "content": {
+          "type": "html",
+          "$t": "<img class=\"custom-post-image hero-image\" src=\"https://shop-phinf.pstatic.net/20240126_131/1706250036170IvcEC_JPEG/107385878847626040_175948254.jpg?type=o1000\" alt=\"세포랩 바이오제닉 에센스 90% 155ml 더블 기획 세트 대표 이미지\" width=\"640\" height=\"360\">    <img src=\"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbd8U2VPF40mPARS2ydjKgymI60yZXtWuMHvNTT4TowoO-ne598fX1F82PJ2SCEcbbJ-LJtUDixq7uvuGqa34ywiQd5P9umpwyBjxfAaOV8jQ3xgGsO-2ArazTuzxIhyjN07zEcE9Y8U6wH9Cxu&gt;\" alt=\"카카오톡 공유 버튼\">\n            "
+        }
+      },
+      {
+        "title": {
+          "type": "text",
+          "$t": "CUCKOO 쿠쿠 건조분쇄형 에코웨일 2L 음식물처리기 36%할인 CFD-ENL201DCGW 후기 좋은 이유"
+        },
+        "link": [
+          {
+            "rel": "replies",
+            "type": "application/atom+xml",
+            "href": "https://item.kr-inside.com/feeds/2891068363590269948/comments/default",
+            "title": "댓글"
+          },
+          {
+            "rel": "replies",
+            "type": "text/html",
+            "href": "https://item.kr-inside.com/2026/04/cuckoo-2l-36-cfd-enl201dcgw.html#comment-form",
+            "title": "0개의 덧글"
+          },
+          {
+            "rel": "edit",
+            "type": "application/atom+xml",
+            "href": "https://www.blogger.com/feeds/2506209856714631275/posts/default/2891068363590269948"
+          },
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://www.blogger.com/feeds/2506209856714631275/posts/default/2891068363590269948"
+          },
+          {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://item.kr-inside.com/2026/04/cuckoo-2l-36-cfd-enl201dcgw.html",
+            "title": "CUCKOO 쿠쿠 건조분쇄형 에코웨일 2L 음식물처리기 36%할인 CFD-ENL201DCGW 후기 좋은 이유"
+          }
+        ],
+        "published": {
+          "$t": "2026-04-23T10:07:11.333+09:00"
+        },
+        "content": {
+          "type": "html",
+          "$t": "<img class=\"custom-post-image hero-image\" src=\"https://shop-phinf.pstatic.net/20260121_285/1768958927373w0W2W_PNG/35144754734170061_1483957235.png?type=o1000\" alt=\"쿠쿠 건조분쇄형 에코웨일 2L 음식물처리기 그레이스화이트 CFD-ENL201DCGW 쿠쿠 직접생산 대표 이미지\" width=\"640\" height=\"360\">    <img src=\"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbd8U2VPF40mPARS2ydjKgymI60yZXtWuMHvNTT4TowoO-ne598fX1F82PJ2SCEcbbJ-LJtUDixq7uvuGqa34ywiQd5P9umpwyBjxfAaOV8jQ3xgGsO-2ArazTuzxIhyjN07zEcE9Y8U6wH9Cxu&gt;\" alt=\"카카오톡 공유 버튼\">\n            "
+        }
+      },
+      {
+        "title": {
+          "type": "text",
+          "$t": "크록스슬리퍼 추천 2026, 남녀공용 인기 라인업 총정리!"
+        },
+        "link": [
+          {
+            "rel": "replies",
+            "type": "application/atom+xml",
+            "href": "https://item.kr-inside.com/feeds/5109484863960084415/comments/default",
+            "title": "댓글"
+          },
+          {
+            "rel": "replies",
+            "type": "text/html",
+            "href": "https://item.kr-inside.com/2026/01/2026_0258867923.html#comment-form",
+            "title": "0개의 덧글"
+          },
+          {
+            "rel": "edit",
+            "type": "application/atom+xml",
+            "href": "https://www.blogger.com/feeds/2506209856714631275/posts/default/5109484863960084415"
+          },
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://www.blogger.com/feeds/2506209856714631275/posts/default/5109484863960084415"
+          },
+          {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://item.kr-inside.com/2026/01/2026_0258867923.html",
+            "title": "크록스슬리퍼 추천 2026, 남녀공용 인기 라인업 총정리!"
+          }
+        ],
+        "published": {
+          "$t": "2026-01-08T08:41:45.645+09:00"
+        },
+        "content": {
+          "type": "html",
+          "$t": "<img src=\"https://storage.googleapis.com/kr-inside-media/images/9b71c434-dfbe-40fe-a56e-0aa6e5a1ae6e.jpg\" alt=\"크록스슬리퍼 대표 이미지\" width=\"640\" height=\"360\">    <img src=\"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbd8U2VPF40mPARS2ydjKgymI60yZXtWuMHvNTT4TowoO-ne598fX1F82PJ2SCEcbbJ-LJtUDixq7uvuGqa34ywiQd5P9umpwyBjxfAaOV8jQ3xgGsO-2ArazTuzxIhyjN07zEcE9Y8U6wH9Cxu&gt;\">\n            "
+        }
+      },
+      {
+        "title": {
+          "type": "text",
+          "$t": "티니핑 인기상품 총정리! 시즌5 캐릭터 완구·굿즈 BEST 추천"
+        },
+        "link": [
+          {
+            "rel": "replies",
+            "type": "application/atom+xml",
+            "href": "https://item.kr-inside.com/feeds/3718882588918743486/comments/default",
+            "title": "댓글"
+          },
+          {
+            "rel": "replies",
+            "type": "text/html",
+            "href": "https://item.kr-inside.com/2026/01/5-best.html#comment-form",
+            "title": "0개의 덧글"
+          },
+          {
+            "rel": "edit",
+            "type": "application/atom+xml",
+            "href": "https://www.blogger.com/feeds/2506209856714631275/posts/default/3718882588918743486"
+          },
+          {
+            "rel": "self",
+            "type": "application/atom+xml",
+            "href": "https://www.blogger.com/feeds/2506209856714631275/posts/default/3718882588918743486"
+          },
+          {
+            "rel": "alternate",
+            "type": "text/html",
+            "href": "https://item.kr-inside.com/2026/01/5-best.html",
+            "title": "티니핑 인기상품 총정리! 시즌5 캐릭터 완구·굿즈 BEST 추천"
+          }
+        ],
+        "published": {
+          "$t": "2026-01-08T08:40:45.555+09:00"
+        },
+        "content": {
+          "type": "html",
+          "$t": "<img src=\"https://storage.googleapis.com/kr-inside-media/images/7fb2eb29-5d8f-4ac5-9f3d-3612ca25f6ba.jpg\" alt=\"티니핑 대표 이미지\" width=\"640\" height=\"360\">    <img src=\"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjbd8U2VPF40mPARS2ydjKgymI60yZXtWuMHvNTT4TowoO-ne598fX1F82PJ2SCEcbbJ-LJtUDixq7uvuGqa34ywiQd5P9umpwyBjxfAaOV8jQ3xgGsO-2ArazTuzxIhyjN07zEcE9Y8U6wH9Cxu&gt;\">\n            "
+        }
+      }
+    ]
+  }
+}

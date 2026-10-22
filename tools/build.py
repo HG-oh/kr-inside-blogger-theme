@@ -119,7 +119,7 @@ def build(output: Path, asset_base: str | None = None) -> dict:
     payload = source.encode('utf-8')
     (output / filename).write_bytes(payload)
     manifest = {
-        'theme': 'KR Inside Journal', 'version': '1.0.0',
+        'theme': 'KR Inside Journal', 'version': '1.1.0',
         'mode': 'verified-external' if asset_base else 'portable',
         'xml': {'filename': filename, 'bytes': len(payload), 'sha256': digest(payload)},
         'assets': {p.name: {'bytes': p.stat().st_size, 'sha256': digest(p.read_bytes())}

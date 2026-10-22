@@ -36,7 +36,11 @@
     return node;
   }
 
+  const recentImageRetries = new WeakMap();
+
   function replaceBrokenImage(image) {
+    const retry = recentImageRetries.get(image);
+    if (retry) { retry(); return; }
     if (image instanceof HTMLImageElement &&
         image.closest('.story-image, .ranked-image, .recent-image')) {
       image.replaceWith(placeholder());
@@ -142,6 +146,71 @@
     document.querySelectorAll('[data-edition-description]').forEach(node => { node.textContent = edition[2]; });
   }
 
+  // A template's contents are inert: never attach parsed feed/article nodes.
+  // Only validated image URL strings are copied into our own image elements.
+  function imageURL(value, base) {
+    if (typeof value !== 'string' || /[<>\u0000-\u001f]/.test(value)) return null;
+    const url = safeURL(value, base);
+    if (!url || /(?:^|\/)(?:blank|spacer|pixel|transparent|tracking[-_]?pixel)(?:[._-]|$)/i.test(url.pathname)) return null;
+    return url.href;
+  }
+
+  function imagesFromHTML(markup, base) {
+    if (typeof markup !== 'string' || !markup.trim()) return [];
+    const template = document.createElement('template');
+    template.innerHTML = markup.slice(0, 1500000);
+    const content = template.content;
+    const candidates = [];
+    const add = value => {
+      const url = imageURL(value, base);
+      if (url && !candidates.includes(url)) candidates.push(url);
+    };
+    content.querySelectorAll('img').forEach(image => {
+      const width = Number.parseInt(image.getAttribute('width'), 10);
+      const height = Number.parseInt(image.getAttribute('height'), 10);
+      if ((width > 0 && width <= 2) || (height > 0 && height <= 2)) return;
+      ['data-src', 'data-original', 'data-lazy-src'].forEach(name => add(image.getAttribute(name)));
+      const srcset = image.getAttribute('data-srcset') || image.getAttribute('srcset') || '';
+      srcset.split(',').map(part => part.trim().split(/\s+/)[0]).forEach(add);
+      add(image.getAttribute('src'));
+    });
+    return candidates.slice(0, 5);
+  }
+
+  function recentImage(link, entry, postURL) {
+    const queue = [imageURL(entry.media$thumbnail?.url, postURL.href),
+      ...imagesFromHTML(entry.content?.$t, postURL.href),
+      ...imagesFromHTML(entry.summary?.$t, postURL.href)].filter(Boolean);
+    const tried = new Set();
+    const image = element('img');
+    image.alt = '';
+    image.width = 160;
+    image.height = 110;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    function next() {
+      let candidate;
+      while (queue.length && !candidate) {
+        const url = queue.shift();
+        if (!tried.has(url)) candidate = url;
+      }
+      if (!candidate) {
+        recentImageRetries.delete(image);
+        link.replaceChildren(placeholder());
+        return;
+      }
+      tried.add(candidate);
+      if (image.parentNode !== link) link.replaceChildren(image);
+      image.src = candidate;
+    }
+    recentImageRetries.set(image, next);
+    image.addEventListener('load', () => {
+      if (image.naturalWidth <= 2 || image.naturalHeight <= 2) next();
+    });
+    link.append(placeholder());
+    next();
+  }
+
   function recentItem(entry, base) {
     if (!entry || typeof entry !== 'object' || !Array.isArray(entry.link)) return null;
     const alternate = entry.link.find(link => link && link.rel === 'alternate' && safeURL(link.href, base));
@@ -152,17 +221,7 @@
     const imageLink = element('a', 'recent-image');
     imageLink.href = url.href;
     imageLink.setAttribute('aria-label', title);
-    const thumb = safeURL(entry.media$thumbnail?.url, base);
-    if (thumb) {
-      const image = element('img');
-      image.src = thumb.href;
-      image.alt = '';
-      image.width = 160;
-      image.height = 110;
-      image.loading = 'lazy';
-      image.decoding = 'async';
-      imageLink.append(image);
-    } else imageLink.append(placeholder());
+    recentImage(imageLink, entry, url);
     const content = element('div', 'recent-content');
     const link = element('a', 'recent-title', title);
     link.href = url.href;
@@ -221,6 +280,113 @@
     }
   }
 
+  function setupListing() {
+    const grid = document.querySelector('.post-grid[data-page-size]');
+    const navigation = document.querySelector('#main-content .pagination');
+    if (!grid || !navigation) return;
+    const limit = Math.min(30, Math.max(20, Number(grid.dataset.pageSize) || 24));
+    let next = navigation.querySelector('.rel-older');
+    const localURL = (value, base = location.href) => {
+      const url = safeURL(value, base);
+      return url?.origin === location.origin ? url : null;
+    };
+    let cursor = next ? localURL(next.getAttribute('href')) : null;
+    const key = card => localURL(card.querySelector('.story-title a')?.getAttribute('href'))?.href;
+    const seen = new Set([...grid.children].map(key).filter(Boolean));
+    const visited = new Set();
+    const status = element('div', 'listing-status');
+    const message = element('span');
+    message.setAttribute('role', 'status');
+    const retry = element('button', 'listing-retry', '다시 불러오기');
+    retry.type = 'button';
+    retry.hidden = true;
+    status.append(message, retry);
+    navigation.before(status);
+
+    function updateNext() {
+      if (!cursor) { if (next) next.hidden = true; return; }
+      if (!next) {
+        next = element('a', 'rel-older', '다음 페이지 →');
+        next.rel = 'next';
+        navigation.append(next);
+      }
+      const url = new URL(cursor.href);
+      url.searchParams.set('max-results', String(limit));
+      next.href = url.href;
+      next.hidden = false;
+    }
+
+    async function fill() {
+      if (grid.dataset.listState === 'loading') return;
+      grid.dataset.listState = 'loading';
+      retry.hidden = true;
+      if (next) next.hidden = true;
+      message.textContent = cursor && grid.children.length < limit ? '이야기를 더 불러오는 중…' : '';
+      try {
+        for (let attempt = 0; cursor && grid.children.length < limit; attempt++) {
+          if (attempt >= limit) throw new Error('Too many listing pages');
+          const source = new URL(cursor.href);
+          const remaining = limit - grid.children.length;
+          source.searchParams.set('max-results', String(remaining));
+          if (visited.has(source.href)) throw new Error('Repeated listing page');
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 8000);
+          let markup, response;
+          try {
+            response = await fetch(source.href, {
+              credentials: 'same-origin', signal: controller.signal, headers: {Accept: 'text/html'}
+            });
+            if (!response.ok || !localURL(response.url || source.href)) throw new Error('Listing unavailable');
+            markup = await response.text();
+          } finally { clearTimeout(timer); }
+          // The full page stays inert; only the native story cards are appended.
+          const template = document.createElement('template');
+          template.innerHTML = markup;
+          const cards = [...template.content.querySelectorAll('.post-grid > .story-card')];
+          const older = template.content.querySelector('#main-content .pagination .rel-older');
+          const following = older ? localURL(older.getAttribute('href'), source.href) : null;
+          if (!cards.length || (older && !following)) throw new Error('Invalid listing page');
+          const fresh = [], batchKeys = new Set(seen);
+          for (const card of cards) {
+            const id = key(card);
+            if (!id) throw new Error('Invalid story URL');
+            if (!batchKeys.has(id)) { fresh.push(card); batchKeys.add(id); }
+          }
+          // Never discard overflow and advance a cursor: that would skip stories.
+          if (!fresh.length || fresh.length > remaining) throw new Error('Unexpected listing size');
+          const fragment = document.createDocumentFragment();
+          fresh.forEach(card => {
+            card.querySelectorAll('script, style, link, iframe, object, embed, base').forEach(node => node.remove());
+            [card, ...card.querySelectorAll('*')].forEach(node => {
+              for (const attr of [...node.attributes]) {
+                if (/^on/i.test(attr.name)) node.removeAttribute(attr.name);
+              }
+            });
+            card.querySelectorAll('img').forEach(image => {
+              image.loading = 'lazy';
+              image.decoding = 'async';
+              image.removeAttribute('fetchpriority');
+            });
+            card.classList.remove('story-card--lead');
+            fragment.append(card);
+          });
+          grid.append(fragment);
+          batchKeys.forEach(id => seen.add(id));
+          visited.add(source.href);
+          cursor = following;
+        }
+        grid.dataset.listState = 'ready';
+        message.textContent = '';
+      } catch (_) {
+        grid.dataset.listState = 'error';
+        message.textContent = '나머지 글을 불러오지 못했습니다. 다시 시도하거나 다음 페이지로 이동해 주세요.';
+        retry.hidden = false;
+      } finally { updateNext(); }
+    }
+    retry.addEventListener('click', fill);
+    fill();
+  }
+
   function setupCopy() {
     document.querySelectorAll('[data-copy-link]').forEach(button => {
       button.addEventListener('click', async () => {
@@ -260,6 +426,7 @@
       if (image.complete && image.naturalWidth === 0) replaceBrokenImage(image);
     });
     document.querySelectorAll('[data-recent-posts]').forEach(loadRecent);
+    setupListing();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, {once: true});
